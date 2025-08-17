@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics and Measurements - Interactive Learning</title>
+    <title>Interactive Physics Textbook</title>
     <style>
         * {
             margin: 0;
@@ -17,409 +17,323 @@
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin-top: 20px;
-            margin-bottom: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
         }
 
         .header {
-            background: linear-gradient(45deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #2c3e50, #3498db, #9b59b6);
             color: white;
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,100 1000,0 1000,100"/></svg>');
+            background-size: cover;
+            animation: wave 3s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.2); }
+            to { text-shadow: 3px 3px 6px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.4); }
         }
 
         .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 1.4rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+            font-style: italic;
         }
 
-        .navigation {
-            background: #34495e;
-            padding: 1rem;
+        .content {
+            padding: 3rem;
+        }
+
+        .intro-section {
             text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(116, 185, 255, 0.3);
         }
 
-        .nav-btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            margin: 5px;
-            border-radius: 25px;
+        .intro-section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .chapter-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(52, 152, 219, 0.1);
             cursor: pointer;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, #3498db, #9b59b6, #e74c3c, #f39c12, #27ae60);
+            background-size: 300% 300%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .chapter-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .chapter-card h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5rem;
+        }
+
+        .chapter-card p {
+            color: #555;
             font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .chapter-topics {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .chapter-topics li {
+            padding: 0.3rem 0;
+            color: #666;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .chapter-topics li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-size: 0.8rem;
+        }
+
+        .chapter-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        .nav-btn:hover {
-            background: #2980b9;
+        .chapter-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .chapter-link:hover::before {
+            left: 100%;
+        }
+
+        .chapter-link:hover {
+            background: linear-gradient(45deg, #2980b9, #3498db);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
         }
 
-        .nav-btn.active {
-            background: #e74c3c;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        .content {
+        .features-section {
+            margin-top: 3rem;
             padding: 2rem;
-            min-height: 400px;
-        }
-
-        .chapter {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .chapter.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .chapter h2 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 0.5rem;
-        }
-
-        .chapter h3 {
-            color: #34495e;
-            font-size: 1.4rem;
-            margin: 1.5rem 0 1rem 0;
-        }
-
-        .learning-objectives {
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            border-radius: 15px;
             color: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .interactive-element {
-            background: #ecf0f1;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 5px solid #3498db;
-        }
-
-        .simulation-container {
-            background: linear-gradient(135deg, #a8edea, #fed6e3);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
             text-align: center;
         }
 
-        .simulation-canvas {
-            background: rgba(255,255,255,0.95);
-            border-radius: 10px;
-            margin: 1rem 0;
-            border: 2px solid rgba(52, 152, 219, 0.3);
-        }
-
-        .quiz-container {
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .quiz-question {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
-
-        .quiz-options {
-            list-style: none;
-        }
-
-        .quiz-options li {
-            background: rgba(255,255,255,0.2);
-            margin: 0.5rem 0;
-            padding: 0.8rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .quiz-options li:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(5px);
-        }
-
-        .quiz-options li.correct {
-            background: #27ae60 !important;
-            color: white;
-        }
-
-        .quiz-options li.incorrect {
-            background: #e74c3c !important;
-            color: white;
-        }
-
-        .progress-bar {
-            background: #ecf0f1;
-            height: 8px;
-            border-radius: 4px;
-            margin: 1rem 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: linear-gradient(45deg, #00b894, #00cec9);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-
-        .formula-box {
-            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            border-left: 5px solid #e17055;
-            text-align: center;
-        }
-
-        .formula {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 0.5rem 0;
-            font-family: 'Times New Roman', serif;
-            background: rgba(255,255,255,0.7);
-            padding: 0.5rem;
-            border-radius: 5px;
-        }
-
-        .unit-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .unit-table th {
-            background: #3498db;
-            color: white;
-            padding: 1rem;
-            text-align: left;
-        }
-
-        .unit-table td {
-            padding: 0.8rem;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .unit-table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        .vector-demo {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(52, 152, 219, 0.1);
-            border-radius: 8px;
-        }
-
-        .scalar-box, .vector-box {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 120px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .vector-box {
-            position: relative;
-        }
-
-        .arrow {
-            position: absolute;
-            top: 50%;
-            right: -15px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid #e74c3c;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-        }
-
-        .prefix-converter {
+        .features-grid {
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            gap: 1rem;
-            align-items: center;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(39, 174, 96, 0.1);
-            border-radius: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
-        .converter-input {
-            padding: 0.8rem;
-            border: 2px solid #27ae60;
-            border-radius: 5px;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        .dimensional-checker {
-            background: rgba(230, 126, 34, 0.1);
+        .feature-item {
             padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-        }
-
-        .equation-input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #e67e22;
-            border-radius: 5px;
-            font-size: 1rem;
-            margin: 0.5rem 0;
-        }
-
-        .btn {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 0.5rem;
-            transition: background 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #2980b9;
-        }
-
-        .btn.success {
-            background: #27ae60;
-        }
-
-        .btn.success:hover {
-            background: #229954;
-        }
-
-        .btn.danger {
-            background: #e74c3c;
-        }
-
-        .btn.danger:hover {
-            background: #c0392b;
-        }
-
-        .pendulum-container {
-            position: relative;
-            height: 300px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
-            margin: 1rem 0;
-        }
-
-        .slider-container {
-            margin: 1rem 0;
-            padding: 1rem;
             background: rgba(255,255,255,0.1);
-            border-radius: 8px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
 
-        .slider {
-            width: 100%;
-            height: 5px;
-            border-radius: 5px;
-            background: #d3d3d3;
-            outline: none;
-            margin: 0.5rem 0;
-        }
-
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #3498db;
-            cursor: pointer;
-        }
-
-        .result-display {
-            background: rgba(255,255,255,0.2);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-weight: bold;
+        .feature-item h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .footer {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
             text-align: center;
-            padding: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
         }
 
-        .hidden {
-            display: none;
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ddd, #bbb);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .progress-dot:hover {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            transform: scale(1.1);
         }
 
         @media (max-width: 768px) {
-            .container {
-                margin: 10px;
-                border-radius: 10px;
-            }
-            
             .header h1 {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
-            .nav-btn {
-                display: block;
-                margin: 5px 0;
-                width: 100%;
+            .chapters-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .chapter-card {
+                padding: 1.5rem;
             }
             
             .content {
-                padding: 1rem;
+                padding: 2rem 1.5rem;
             }
 
-            .vector-demo {
-                flex-direction: column;
-                gap: 1rem;
+            .progress-indicator {
+                gap: 0.5rem;
+            }
+
+            .progress-dot {
+                width: 50px;
+                height: 50px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -427,324 +341,230 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1>📏 Physics and Measurements</h1>
-            <p>The Foundation of Quantitative Science</p>
+            <h1>⚡ Interactive Physics</h1>
+            <p>A Comprehensive Journey Through the Fundamental Laws of Nature</p>
         </header>
 
-        <nav class="navigation">
-            <button class="nav-btn active" onclick="showChapter(1)">Introduction & SI Units</button>
-            <button class="nav-btn" onclick="showChapter(2)">Scalars & Vectors</button>
-            <button class="nav-btn" onclick="showChapter(3)">Dimensional Analysis</button>
-            <button class="nav-btn" onclick="showChapter(4)">Assessment & Practice</button>
-        </nav>
+        <div class="content">
+            <div class="intro-section">
+                <h2>🚀 Welcome to Your Physics Adventure!</h2>
+                <p>
+                    Embark on an exciting journey through the fascinating world of physics! This interactive textbook 
+                    combines theoretical knowledge with hands-on simulations, real-world examples, and engaging 
+                    visualizations. From the smallest measurements to the grandest waves, discover how physics 
+                    shapes our understanding of the universe.
+                </p>
+            </div>
 
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-indicator">
+                <div class="progress-dot" title="Chapter 1">Ch 1</div>
+                <div class="progress-dot" title="Chapter 2">Ch 2</div>
+                <div class="progress-dot" title="Chapter 3">Ch 3</div>
+                <div class="progress-dot" title="Chapter 4">Ch 4</div>
+                <div class="progress-dot" title="Chapter 5">Ch 5</div>
+            </div>
+
+            <div class="chapters-grid">
+                <!-- Chapter 1 -->
+                <div class="chapter-card">
+                    <span class="chapter-icon">📏</span>
+                    <h3>Chapter 1: Physics and Measurements</h3>
+                    <p>
+                        Begin your physics journey by understanding the fundamental role of measurements in science. 
+                        Learn about SI units, dimensional analysis, and the distinction between scalars and vectors.
+                    </p>
+                    <ul class="chapter-topics">
+                        <li>SI Fundamental Units & Scientific Prefixes</li>
+                        <li>Scalars vs Vectors with Interactive Examples</li>
+                        <li>Dimensional Analysis & Equation Checking</li>
+                        <li>Precision, Accuracy & Significant Figures</li>
+                        <li>Interactive Simulations & Practice Problems</li>
+                    </ul>
+                    <center>
+                        <a href="#chapter1" class="chapter-link" onclick="loadChapter(1)">Explore Chapter 1 →</a>
+                    </center>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="chapter-card">
+                    <span class="chapter-icon">🏗️</span>
+                    <h3>Chapter 2: Solids and Elasticity</h3>
+                    <p>
+                        Discover the mechanical properties of solids, from stress and strain to elastic deformation. 
+                        Understand how materials respond to forces and the limits of their elasticity.
+                    </p>
+                    <ul class="chapter-topics">
+                        <li>Stress, Strain & Young's Modulus</li>
+                        <li>Hooke's Law & Elastic Deformation</li>
+                        <li>Bulk Modulus & Shear Modulus</li>
+                        <li>Material Properties & Engineering Applications</li>
+                        <li>Interactive Stress-Strain Simulations</li>
+                    </ul>
+                    <center>
+                        <a href="#chapter2" class="chapter-link" onclick="loadChapter(2)">Explore Chapter 2 →</a>
+                    </center>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="chapter-card">
+                    <span class="chapter-icon">🌊</span>
+                    <h3>Chapter 3: Fluids</h3>
+                    <p>
+                        Dive into the world of fluid mechanics! Explore pressure, buoyancy, and fluid flow. 
+                        From Pascal's principle to Bernoulli's equation, master the behavior of liquids and gases.
+                    </p>
+                    <ul class="chapter-topics">
+                        <li>Pressure, Density & Pascal's Principle</li>
+                        <li>Archimedes' Principle & Buoyancy</li>
+                        <li>Fluid Statics & Atmospheric Pressure</li>
+                        <li>Bernoulli's Equation & Fluid Dynamics</li>
+                        <li>Viscosity & Real Fluid Behavior</li>
+                    </ul>
+                    <center>
+                        <a href="#chapter3" class="chapter-link" onclick="loadChapter(3)">Explore Chapter 3 →</a>
+                    </center>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="chapter-card">
+                    <span class="chapter-icon">🌡️</span>
+                    <h3>Chapter 4: Thermal Physics</h3>
+                    <p>
+                        Explore the fascinating world of heat and temperature! Understand thermal expansion, 
+                        heat transfer, and the kinetic theory of gases in this comprehensive thermal physics chapter.
+                    </p>
+                    <ul class="chapter-topics">
+                        <li>Temperature Scales & Thermal Expansion</li>
+                        <li>Heat Transfer: Conduction, Convection, Radiation</li>
+                        <li>Calorimetry & Specific Heat Capacity</li>
+                        <li>Kinetic Theory of Gases</li>
+                        <li>Thermal Equilibrium & Heat Engines</li>
+                    </ul>
+                    <center>
+                        <a href="#chapter4" class="chapter-link" onclick="loadChapter(4)">Explore Chapter 4 →</a>
+                    </center>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div class="chapter-card">
+                    <span class="chapter-icon">🎵</span>
+                    <h3>Chapter 5: Waves and Sound</h3>
+                    <p>
+                        Experience the world of waves and sound! From simple harmonic motion to complex wave phenomena, 
+                        discover how energy travels through different media and creates the sounds we hear.
+                    </p>
+                    <ul class="chapter-topics">
+                        <li>Wave Properties: Amplitude, Frequency, Wavelength</li>
+                        <li>Simple Harmonic Motion & Oscillations</li>
+                        <li>Sound Waves & Acoustic Phenomena</li>
+                        <li>Wave Interference & Standing Waves</li>
+                        <li>Doppler Effect & Wave Applications</li>
+                    </ul>
+                    <center>
+                        <a href="#chapter5" class="chapter-link" onclick="loadChapter(5)">Explore Chapter 5 →</a>
+                    </center>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h2>✨ What Makes This Textbook Special</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <h4>🎮 Interactive Simulations</h4>
+                        <p>Hands-on experiments and visualizations that bring physics concepts to life</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🧮 Real-time Calculations</h4>
+                        <p>Dynamic calculators and converters for instant problem solving</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📊 Visual Learning</h4>
+                        <p>Graphs, animations, and diagrams that make complex concepts clear</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>✅ Self-Assessment</h4>
+                        <p>Quizzes and practice problems with immediate feedback</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🌍 Real-World Examples</h4>
+                        <p>Practical applications that connect physics to everyday life</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📱 Responsive Design</h4>
+                        <p>Optimized for all devices - study anywhere, anytime</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <main class="content">
-            <!-- Chapter 1: Introduction & SI Units -->
-            <div class="chapter active" id="chapter1">
-                <h2>🔬 Chapter 1: Introduction & SI Units</h2>
-                
-                <div class="learning-objectives">
-                    <h3>📚 Learning Objectives</h3>
-                    <ul>
-                        <li>Understand the role of physics in explaining natural phenomena</li>
-                        <li>Learn about measurement systems and SI units</li>
-                        <li>Use scientific prefixes for powers of ten</li>
-                        <li>Apply precise measurement concepts</li>
-                    </ul>
-                </div>
+        <footer class="footer">
+            <p>&copy; 2025 Interactive Physics Textbook | Building Understanding Through Experience</p>
+            <p style="margin-top: 0.5rem; opacity: 0.8;">🚀 Ready to explore the universe through physics?</p>
+        </footer>
+    </div>
 
-                <p>Physics is a <strong>quantitative science</strong> that seeks to understand and describe natural phenomena through precise measurements and mathematical relationships.</p>
+    <script>
+        // Animation for progress dots
+        const progressDots = document.querySelectorAll('.progress-dot');
+        progressDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                loadChapter(index + 1);
+            });
+        });
 
-                <h3>🌍 Why Measurements Matter</h3>
-                <div class="interactive-element">
-                    <h4>Real-World Example: Baby Elephant Measurements</h4>
-                    <p>Let's measure a baby elephant's vital statistics:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                        <div style="text-align: center; padding: 1rem; background: rgba(52, 152, 219, 0.1); border-radius: 8px;">
-                            <h4>Mass</h4>
-                            <div style="font-size: 2rem; color: #3498db;">120 kg</div>
-                            <p>Fundamental SI Unit</p>
-                        </div>
-                        <div style="text-align: center; padding: 1rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px;">
-                            <h4>Height</h4>
-                            <div style="font-size: 2rem; color: #e74c3c;">0.9 m</div>
-                            <p>Length measurement</p>
-                        </div>
-                        <div style="text-align: center; padding: 1rem; background: rgba(39, 174, 96, 0.1); border-radius: 8px;">
-                            <h4>Age</h4>
-                            <div style="font-size: 2rem; color: #27ae60;">6 months</div>
-                            <p>Time-based measurement</p>
-                        </div>
-                    </div>
-                </div>
+        // Chapter cards hover effects
+        const chapterCards = document.querySelectorAll('.chapter-card');
+        chapterCards.forEach((card, index) => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
 
-                <h3>📐 SI Fundamental Units</h3>
-                <table class="unit-table">
-                    <thead>
-                        <tr>
-                            <th>Physical Quantity</th>
-                            <th>SI Unit</th>
-                            <th>Symbol</th>
-                            <th>Definition</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Length</td>
-                            <td>meter</td>
-                            <td>m</td>
-                            <td>Distance light travels in 1/299,792,458 seconds</td>
-                        </tr>
-                        <tr>
-                            <td>Mass</td>
-                            <td>kilogram</td>
-                            <td>kg</td>
-                            <td>Defined by Planck constant</td>
-                        </tr>
-                        <tr>
-                            <td>Time</td>
-                            <td>second</td>
-                            <td>s</td>
-                            <td>9,192,631,770 cesium-133 transitions</td>
-                        </tr>
-                        <tr>
-                            <td>Electric Current</td>
-                            <td>ampere</td>
-                            <td>A</td>
-                            <td>Defined by elementary charge</td>
-                        </tr>
-                        <tr>
-                            <td>Temperature</td>
-                            <td>kelvin</td>
-                            <td>K</td>
-                            <td>Defined by Boltzmann constant</td>
-                        </tr>
-                        <tr>
-                            <td>Amount of Substance</td>
-                            <td>mole</td>
-                            <td>mol</td>
-                            <td>Avogadro constant (6.02×10²³)</td>
-                        </tr>
-                        <tr>
-                            <td>Luminous Intensity</td>
-                            <td>candela</td>
-                            <td>cd</td>
-                            <td>Luminous efficacy of monochromatic radiation</td>
-                        </tr>
-                    </tbody>
-                </table>
+        // Function to load chapters (placeholder for now)
+        function loadChapter(chapterNum) {
+            // In a real implementation, this would navigate to the chapter page
+            console.log(`Loading Chapter ${chapterNum}`);
+            
+            // For demonstration, we'll show an alert
+            const chapterTitles = [
+                "Physics and Measurements",
+                "Solids and Elasticity", 
+                "Fluids",
+                "Thermal Physics",
+                "Waves and Sound"
+            ];
+            
+            alert(`🚀 Chapter ${chapterNum}: ${chapterTitles[chapterNum - 1]} will be loaded!\n\nThis is where the chapter-specific page would open with all the interactive content, simulations, and learning materials.`);
+        }
 
-                <div class="simulation-container">
-                    <h3>🕰️ Interactive: Cesium Atomic Clock</h3>
-                    <p>The second is defined by cesium-133 atom transitions. Watch the counter!</p>
-                    <canvas id="atomicClock" class="simulation-canvas" width="400" height="200"></canvas>
-                    <div class="result-display">
-                        <div>Transitions counted: <span id="transitionCount">0</span></div>
-                        <div>Time elapsed: <span id="timeElapsed">0.000</span> seconds</div>
-                    </div>
-                    <button class="btn success" onclick="startAtomicClock()">Start Clock</button>
-                    <button class="btn danger" onclick="stopAtomicClock()">Stop Clock</button>
-                </div>
-
-                <h3>🔢 Scientific Prefixes</h3>
-                <div class="interactive-element">
-                    <h4>Unit Converter</h4>
-                    <p>Convert between different metric prefixes:</p>
-                    <div class="prefix-converter">
-                        <div>
-                            <input type="number" id="inputValue" class="converter-input" placeholder="Enter value" value="1000">
-                            <select id="inputUnit" class="converter-input">
-                                <option value="1">m (meter)</option>
-                                <option value="0.001" selected>mm (millimeter)</option>
-                                <option value="0.01">cm (centimeter)</option>
-                                <option value="1000">km (kilometer)</option>
-                                <option value="1000000">Mm (megameter)</option>
-                            </select>
-                        </div>
-                        <div style="font-size: 1.5rem; font-weight: bold;">=</div>
-                        <div>
-                            <input type="text" id="outputValue" class="converter-input" readonly>
-                            <select id="outputUnit" class="converter-input">
-                                <option value="1" selected>m (meter)</option>
-                                <option value="0.001">mm (millimeter)</option>
-                                <option value="0.01">cm (centimeter)</option>
-                                <option value="1000">km (kilometer)</option>
-                                <option value="1000000">Mm (megameter)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn" onclick="convertUnits()">Convert</button>
-                </div>
-
-                <div class="formula-box">
-                    <h3>🧮 Common Prefixes</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; text-align: left;">
-                        <div class="formula">pico (p) = 10⁻¹²</div>
-                        <div class="formula">nano (n) = 10⁻⁹</div>
-                        <div class="formula">micro (μ) = 10⁻⁶</div>
-                        <div class="formula">milli (m) = 10⁻³</div>
-                        <div class="formula">kilo (k) = 10³</div>
-                        <div class="formula">mega (M) = 10⁶</div>
-                        <div class="formula">giga (G) = 10⁹</div>
-                        <div class="formula">tera (T) = 10¹²</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chapter 2: Scalars & Vectors -->
-            <div class="chapter" id="chapter2">
-                <h2>↗️ Chapter 2: Scalars & Vectors</h2>
-                
-                <p>Physical quantities can be classified into two fundamental types based on the information they provide.</p>
-
-                <h3>📊 Understanding the Difference</h3>
-                <div class="vector-demo">
-                    <div class="scalar-box">
-                        <h4>📏 Scalar</h4>
-                        <p><strong>Magnitude Only</strong></p>
-                        <div style="font-size: 1.5rem; color: #3498db; margin: 0.5rem 0;">25 km/h</div>
-                        <p>Speed</p>
-                    </div>
-                    <div style="font-size: 2rem; color: #e67e22;">VS</div>
-                    <div class="vector-box">
-                        <h4>🧭 Vector</h4>
-                        <p><strong>Magnitude + Direction</strong></p>
-                        <div style="font-size: 1.5rem; color: #e74c3c; margin: 0.5rem 0;">25 km/h North</div>
-                        <p>Velocity</p>
-                        <div class="arrow"></div>
-                    </div>
-                </div>
-
-                <div class="interactive-element">
-                    <h3>🎯 Interactive: Scalar vs Vector Examples</h3>
-                    <p>Click on each quantity to see if it's a scalar or vector:</p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
-                        <button class="btn" onclick="revealQuantity('mass', 'scalar')">Mass</button>
-                        <button class="btn" onclick="revealQuantity('displacement', 'vector')">Displacement</button>
-                        <button class="btn" onclick="revealQuantity('temperature', 'scalar')">Temperature</button>
-                        <button class="btn" onclick="revealQuantity('force', 'vector')">Force</button>
-                        <button class="btn" onclick="revealQuantity('energy', 'scalar')">Energy</button>
-                        <button class="btn" onclick="revealQuantity('acceleration', 'vector')">Acceleration</button>
-                        <button class="btn" onclick="revealQuantity('distance', 'scalar')">Distance</button>
-                        <button class="btn" onclick="revealQuantity('velocity', 'vector')">Velocity</button>
-                    </div>
-                    <div id="quantityResult" class="result-display hidden">
-                        <h4 id="quantityName"></h4>
-                        <p id="quantityType"></p>
-                        <p id="quantityExplanation"></p>
-                    </div>
-                </div>
-
-                <div class="simulation-container">
-                    <h3>🚶‍♂️ Distance vs Displacement Simulation</h3>
-                    <p>Watch how distance and displacement differ for the same path!</p>
-                    <canvas id="pathSimulation" class="simulation-canvas" width="400" height="300"></canvas>
-                    <div class="result-display">
-                        <div>Distance traveled: <span id="distanceValue">0</span> m</div>
-                        <div>Displacement magnitude: <span id="displacementValue">0</span> m</div>
-                        <div>Displacement direction: <span id="displacementDirection">-</span></div>
-                    </div>
-                    <button class="btn success" onclick="startPathAnimation()">Start Journey</button>
-                    <button class="btn danger" onclick="resetPath()">Reset</button>
-                </div>
-
-                <h3>📋 Scalar and Vector Quantities</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <div class="interactive-element">
-                        <h4>📊 Scalar Quantities</h4>
-                        <ul>
-                            <li><strong>Mass:</strong> 5 kg</li>
-                            <li><strong>Temperature:</strong> 25°C</li>
-                            <li><strong>Speed:</strong> 60 km/h</li>
-                            <li><strong>Distance:</strong> 100 m</li>
-                            <li><strong>Energy:</strong> 500 J</li>
-                            <li><strong>Power:</strong> 100 W</li>
-                            <li><strong>Time:</strong> 10 s</li>
-                        </ul>
-                    </div>
-                    <div class="interactive-element">
-                        <h4>🧭 Vector Quantities</h4>
-                        <ul>
-                            <li><strong>Velocity:</strong> 60 km/h East</li>
-                            <li><strong>Displacement:</strong> 100 m North</li>
-                            <li><strong>Force:</strong> 50 N upward</li>
-                            <li><strong>Acceleration:</strong> 9.8 m/s² down</li>
-                            <li><strong>Momentum:</strong> 200 kg⋅m/s forward</li>
-                            <li><strong>Electric Field:</strong> 100 N/C right</li>
-                            <li><strong>Magnetic Field:</strong> 0.5 T into page</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chapter 3: Dimensional Analysis -->
-            <div class="chapter" id="chapter3">
-                <h2>🔍 Chapter 3: Dimensional Analysis</h2>
-                
-                <p>Dimensional analysis is a powerful tool for checking equations, deriving relationships, and understanding physical laws.</p>
-
-                <h3>🧮 Fundamental Dimensions</h3>
-                <div class="formula-box">
-                    <div class="formula">[Length] = L</div>
-                    <div class="formula">[Mass] = M</div>
-                    <div class="formula">[Time] = T</div>
-                    <div class="formula">[Current] = I</div>
-                    <div class="formula">[Temperature] = Θ</div>
-                </div>
-
-                <div class="interactive-element">
-                    <h3>🔧 Equation Dimension Checker</h3>
-                    <p>Enter a physics equation and check if it's dimensionally correct:</p>
-                    <div class="dimensional-checker">
-                        <label>Select an equation to check:</label>
-                        <select id="equationSelect" class="equation-input">
-                            <option value="v=u+at">v = u + at (Kinematic equation)</option>
-                            <option value="s=ut+0.5at²">s = ut + ½at² (Position equation)</option>
-                            <option value="E=mc²">E = mc² (Einstein's equation)</option>
-                            <option value="F=ma">F = ma (Newton's second law)</option>
-                            <option value="KE=0.5mv²">KE = ½mv² (Kinetic energy)</option>
-                            <option value="P=Fv">P = Fv (Power equation)</option>
-                        </select>
-                        <button class="btn success" onclick="checkDimensions()">Check Dimensions</button>
-                        <div id="dimensionResult" class="result-display hidden">
-                            <h4>Dimensional Analysis:</h4>
-                            <div id="leftSideDimension"></div>
-                            <div id="rightSideDimension"></div>
-                            <div id="dimensionConclusion"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3>🎯 Deriving Physical Relations</h3>
-                <div class="simulation-container">
-                    <h3>🔄 Interactive Derivation: Simple Pendulum</h3>
-                    <p>Derive the period of a simple pendulum using dimensional analysis!</p>
-                    <div style="text-align: left; margin: 1rem 0;">
-                        <p><strong>Given factors:</strong></p>
-                        <ul>
-                            <li>Length of pendulum (L): [L]</li>
-                            <li>Acceleration due to gravity (g): [LT⁻²]</li>
-                            <li>Mass of bob (m): [M]</li>
-                        </ul>
-                        <p><strong>Find:</strong> Period T with dimensions [T]</p>
-                    </div>
+        // Add loading animation
+        window.addEventListener('load', () => {
+            const cards = document.querySelectorAll('.chapter-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(30px)';
+                    card.style.transition = 'all 0.6s ease';
                     
-                    <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                        <p>Let T = L<sup>a</sup> × g<sup>b</sup> × m<sup>c</sup></p>
-                        <p>Substituting dimensions: [T] = [L]<sup>a</sup> × [LT⁻²]<sup>b</sup> × [M]<sup>c</sup></p>
-                        <button class="btn" onclick="showDerivationStep(1)">Show Step 1</button>
-                        <button class="btn" onclick="showDerivationStep(2)">Show Step 2</button>
-                        <button class="btn" onclick="showDerivationStep(3)">Final Result</button>
-                    </div>
-                    
-                    <div id="derivationSteps" class="result-display hidden">
-                        <div id="stepContent"></div>
-                    </div>
+                    requestAnimationFrame(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    });
+                }, index * 100);
+            });
+        });
 
-                    <canvas id="pendulumDemo" class="simulation-canvas" width="300" height="250"></canvas>
-                    <div class="slider-container">
-                        <label>Pendulum Length: <span id="pendulumLength">1.0</span> m</label
+        // Add parallax effect to header
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('.header');
+            const rate = scrolled * -0.5;
+            header.style.transform = `translateY(${rate}px)`;
+        });
+    </script>
+</body>
+</html>
