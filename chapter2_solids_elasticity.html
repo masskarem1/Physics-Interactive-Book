@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Solids and Elasticity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #8e44ad, #3498db);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .breadcrumb {
+            background: #34495e;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+        .breadcrumb a {
+            color: #74b9ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .navigation {
+            background: #34495e;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #9b59b6;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+
+        .nav-btn.active {
+            background: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .chapter-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .content {
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        .topic {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .topic.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .topic h2 {
+            color: #8e44ad;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #8e44ad;
+            padding-bottom: 0.5rem;
+        }
+
+        .topic h3 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .learning-objectives {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .interactive-element {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid #8e44ad;
+        }
+
+        .simulation-container {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .simulation-canvas {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px solid rgba(142, 68, 173, 0.3);
+        }
+
+        .stress-strain-graph {
+            background: white;
+            border: 2px solid #8e44ad;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .material-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            transition: transform 0.3s ease;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 5px solid #e91e63;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0.5rem 0;
+            font-family: 'Times New Roman', serif;
+            background: rgba(255,255,255,0.8);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .properties-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .properties-table th {
+            background: #8e44ad;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .properties-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .properties-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .btn {
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #9b59b6;
+        }
+
+        .btn.success {
+            background: #27ae60;
+        }
+
+        .btn.success:hover {
+            background: #229954;
+        }
+
+        .btn.danger {
+            background: #e74c3c;
+        }
+
+        .btn.danger:hover {
+            background: #c0392b;
+        }
+
+        .slider-container {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            margin: 0.5rem 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #8e44ad;
+            cursor: pointer;
+        }
+
+        .result-display {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🏗️ Chapter 2: Solids and Elasticity</h1>
+            <p>Understanding the Mechanical Properties of Matter</p>
+        </header>
+
+        <nav class="breadcrumb">
+            <a href="index.html">🏠 Home</a> > <span>Chapter 2: Solids and Elasticity</span>
+        </nav>
+
+        <div class="navigation">
+            <div>
+                <button class="nav-btn active" onclick="showTopic(1)">Topic 2.1: Stress and Strain</button>
+                <button class="nav-btn" onclick="showTopic(2)">Topic 2.2: Elastic Moduli</button>
+                <button class="nav-btn" onclick="showTopic(3)">Topic 2.3: Material Properties</button>
+                <button class="nav-btn" onclick="showTopic(4)">Topic 2.4: Assessment</button>
+            </div>
+            <div class="chapter-nav">
+                <button class="nav-btn" onclick="previousChapter()" style="background: #3498db;">← Chapter 1</button>
+                <button class="nav-btn" onclick="nextChapter()" style="background: #27ae60;">Chapter 3 →</button>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <main class="content">
+            <!-- Topic 2.1: Stress and Strain -->
+            <div class="topic active" id="topic1">
+                <h2>⚖️ Topic 2.1: Stress and Strain</h2>
+                
+                <div class="learning-objectives">
+                    <h3>📚 Learning Objectives</h3>
+                    <ul>
+                        <li>Define stress and strain in mechanical systems</li>
+                        <li>Understand the relationship between force and deformation</li>
+                        <li>Learn about different types of stress and strain</li>
+                        <li>Apply stress-strain concepts to real materials</li>
+                    </ul>
+                </div>
+
+                <p>When forces are applied to solid materials, they deform. The study of this relationship between forces and deformation is fundamental to understanding mechanical properties.</p>
+
+                <h3>🔍 What is Stress?</h3>
+                <div class="formula-box">
+                    <div class="formula">Stress (σ) = Force (F) / Area (A)</div>
+                    <div class="formula">σ = F/A</div>
+                    <div class="formula">Units: Pa (Pascals) = N/m²</div>
+                </div>
+
+                <div class="interactive-element">
+                    <h4>Interactive: Types of Stress</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: rgba(142, 68, 173, 0.1); border-radius: 8px;">
+                            <h4>Tensile Stress</h4>
+                            <div style="font-size: 1.5rem; color: #8e44ad;">→ ■ ←</div>
+                            <p>Pulling apart</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px;">
+                            <h4>Compressive Stress</h4>
+                            <div style="font-size: 1.5rem; color: #e74c3c;">← ■ →</div>
+                            <p>Pushing together</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(39, 174, 96, 0.1); border-radius: 8px;">
+                            <h4>Shear Stress</h4>
+                            <div style="font-size: 1.5rem; color: #27ae60;">⤴ ■ ⤵</div>
+                            <p>Sliding forces</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>📏 What is Strain?</h3>
+                <div class="formula-box">
+                    <div class="formula">Strain (ε) = Change in length (ΔL) / Original length (L₀)</div>
+                    <div class="formula">ε = ΔL/L₀</div>
+                    <div class="formula">Units: Dimensionless (ratio)</div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🧪 Interactive: Stress-Strain Relationship</h3>
+                    <p>Apply force to a material and observe the deformation!</p>
+                    <canvas id="stressStrainDemo" class="simulation-canvas" width="400" height="300"></canvas>
+                    <div class="slider-container">
+                        <label>Applied Force: <span id="forceValue">100</span> N</label>
+                        <input type="range" id="forceSlider" class="slider" min="0" max="1000" value="100">
+                        <br>
+                        <label>Cross-sectional Area: <span id="areaValue">0.01</span> m²</label>
+                        <input type="range" id="areaSlider" class="slider" min="0.005" max="0.05" step="0.005" value="0.01">
+                    </div>
+                    <div class="result-display">
+                        <div>Stress: <span id="stressValue">10000</span> Pa</div>
+                        <div>Strain: <span id="strainValue">0.001</span></div>
+                        <div>Extension: <span id="extensionValue">1.0</span> mm</div>
+                    </div>
+                    <button class="btn success" onclick="animateDeformation()">Show Deformation</button>
+                    <button class="btn danger" onclick="resetDeformation()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Topic 2.2: Elastic Moduli -->
+            <div class="topic" id="topic2">
+                <h2>🔧 Topic 2.2: Elastic Moduli</h2>
+                
+                <p>Elastic moduli describe how materials respond to different types of stress. They are fundamental properties that characterize material stiffness.</p>
+
+                <h3>🎯 Young's Modulus (E)</h3>
+                <div class="formula-box">
+                    <div class="formula">Young's Modulus = Stress / Strain</div>
+                    <div class="formula">E = σ/ε = (F/A) / (ΔL/L₀)</div>
+                    <div class="formula">E = FL₀ / (AΔL)</div>
+                </div>
+
+                <div class="interactive-element">
+                    <h4>Material Comparison: Young's Modulus</h4>
+                    <table class="properties-table">
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Young's Modulus (GPa)</th>
+                                <th>Density (kg/m³)</th>
+                                <th>Applications</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Steel</td>
+                                <td>200</td>
+                                <td>7850</td>
+                                <td>Construction, automotive</td>
+                            </tr>
+                            <tr>
+                                <td>Aluminum</td>
+                                <td>70</td>
+                                <td>2700</td>
+                                <td>Aerospace, packaging</td>
+                            </tr>
+                            <tr>
+                                <td>Concrete</td>
+                                <td>30</td>
+                                <td>2400</td>
+                                <td>Buildings, infrastructure</td>
+                            </tr>
+                            <tr>
+                                <td>Wood (Oak)</td>
+                                <td>12</td>
+                                <td>750</td>
+                                <td>Furniture, construction</td>
+                            </tr>
+                            <tr>
+                                <td>Rubber</td>
+                                <td>0.002</td>
+                                <td>920</td>
+                                <td>Tires, seals</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>💧 Bulk Modulus (K)</h3>
+                <div class="formula-box">
+                    <div class="formula">Bulk Modulus = -Pressure / (Volume Strain)</div>
+                    <div class="formula">K = -ΔP / (ΔV/V₀)</div>
+                </div>
+
+                <h3>✂️ Shear Modulus (G)</h3>
+                <div class="formula-box">
+                    <div class="formula">Shear Modulus = Shear Stress / Shear Strain</div>
+                    <div class="formula">G = τ/γ</div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>📊 Interactive: Stress-Strain Curves</h3>
+                    <p>Compare stress-strain curves for different materials!</p>
+                    <canvas id="stressStrainCurve" class="stress-strain-graph" width="500" height="300"></canvas>
+                    <div style="margin: 1rem 0;">
+                        <button class="btn" onclick="showMaterialCurve('steel')">Steel</button>
+                        <button class="btn" onclick="showMaterialCurve('aluminum')">Aluminum</button>
+                        <button class="btn" onclick="showMaterialCurve('rubber')">Rubber</button>
+                        <button class="btn" onclick="showMaterialCurve('all')">Compare All</button>
+                    </div>
+                    <div class="result-display">
+                        <div>Selected Material: <span id="selectedMaterial">Steel</span></div>
+                        <div>Elastic Limit: <span id="elasticLimit">250</span> MPa</div>
+                        <div>Ultimate Strength: <span id="ultimateStrength">400</span> MPa</div>
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h4>🧮 Modulus Calculator</h4>
+                    <p>Calculate Young's modulus from experimental data:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div>
+                            <label>Force (N):</label>
+                            <input type="number" id="calcForce" value="1000" style="width: 100%; padding: 8px; margin: 4px 0;">
+                        </div>
+                        <div>
+                            <label>Area (m²):</label>
+                            <input type="number" id="calcArea" value="0.01" step="0.001" style="width: 100%; padding: 8px; margin: 4px 0;">
+                        </div>
+                        <div>
+                            <label>Original Length (m):</label>
+                            <input type="number" id="calcLength" value="1.0" step="0.1" style="width: 100%; padding: 8px; margin: 4px 0;">
+                        </div>
+                        <div>
+                            <label>Extension (m):</label>
+                            <input type="number" id="calcExtension" value="0.001" step="0.0001" style="width: 100%; padding: 8px; margin: 4px 0;">
+                        </div>
+                    </div>
+                    <button class="btn success" onclick="calculateModulus()">Calculate Young's Modulus</button>
+                    <div id="modulusResult" class="result-display hidden">
+                        <div>Stress: <span id="calcStress"></span> Pa</div>
+                        <div>Strain: <span id="calcStrain"></span></div>
+                        <div>Young's Modulus: <span id="calcYoungsModulus"></span> Pa</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 2.3: Material Properties -->
+            <div class="topic" id="topic3">
+                <h2>🔬 Topic 2.3: Material Properties</h2>
+                
+                <p>Understanding how different materials behave under stress is crucial for engineering applications and material selection.</p>
+
+                <h3>📈 Hooke's Law</h3>
+                <div class="formula-box">
+                    <div class="formula">F = kx</div>
+                    <div class="formula">Where: F = Force, k = Spring constant, x = Extension</div>
+                    <div class="formula">For materials: σ = Eε (within elastic limit)</div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🌸 Interactive: Hooke's Law Demonstration</h3>
+                    <p>Watch how a spring extends with applied force!</p>
+                    <canvas id="hooksLawDemo" class="simulation-canvas" width="300" height="400"></canvas>
+                    <div class="slider-container">
+                        <label>Applied Mass: <span id="massValue">1.0</span> kg</label>
+                        <input type="range" id="massSlider" class="slider" min="0" max="5" step="0.1" value="1.0">
+                        <br>
+                        <label>Spring Constant: <span id="springConstant">100</span> N/m</label>
+                        <input type="range" id="springSlider" class="slider" min="50" max="500" step="10" value="100">
+                    </div>
+                    <div class="result-display">
+                        <div>Force: <span id="springForce">9.8</span> N</div>
+                        <div>Extension: <span id="springExtension">0.098</span> m</div>
+                        <div>Potential Energy: <span id="springEnergy">0.48</span> J</div>
+                    </div>
+                </div>
+
+                <h3>🏭 Material Categories</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div class="material-card">
+                        <h4>🔩 Brittle Materials</h4>
+                        <p><strong>Examples:</strong> Glass, ceramics, cast iron</p>
+                        <p><strong>Characteristics:</strong></p>
+                        <ul>
+                            <li>Little plastic deformation before failure</li>
+                            <li>High compressive strength</li>
+                            <li>Low tensile strength</li>
+                            <li>Sudden failure without warning</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="material-card">
+                        <h4>🔧 Ductile Materials</h4>
+                        <p><strong>Examples:</strong> Steel, copper, aluminum</p>
+                        <p><strong>Characteristics:</strong></p>
+                        <ul>
+                            <li>Significant plastic deformation</li>
+                            <li>Can be drawn into wires</li>
+                            <li>Give warning before failure</li>
+                            <li>High toughness</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="material-card">
+                        <h4>🌸 Elastic Materials</h4>
+                        <p><strong>Examples:</strong> Rubber, springs, tendons</p>
+                        <p><strong>Characteristics:</strong></p>
+                        <ul>
+                            <li>Return to original shape after deformation</li>
+                            <li>Large elastic deformation range</li>
+                            <li>Store and release energy efficiently</li>
+                            <li>Non-linear stress-strain relationship</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h4>🎯 Material Selection Tool</h4>
+                    <p>Choose the best material for different applications:</p>
+                    <div id="materialSelection">
+                        <div style="margin: 1rem 0;">
+                            <h5>Application: Bridge Cable</h5>
+                            <p>Requirements: High tensile strength, ductile, corrosion resistant</p>
+                            <button class="btn" onclick="selectMaterial('bridge', 'steel')">Steel</button>
+                            <button class="btn" onclick="selectMaterial('bridge', 'aluminum')">Aluminum</button>
+                            <button class="btn" onclick="selectMaterial('bridge', 'concrete')">Concrete</button>
+                            <div id="bridgeResult" class="hidden" style="margin-top: 0.5rem;"></div>
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <h5>Application: Window Pane</h5>
+                            <p>Requirements: Transparent, rigid, smooth surface</p>
+                            <button class="btn" onclick="selectMaterial('window', 'glass')">Glass</button>
+                            <button class="btn" onclick="selectMaterial('window', 'plastic')">Plastic</button>
+                            <button class="btn" onclick="selectMaterial('window', 'steel')">Steel</button>
+                            <div id="windowResult" class="hidden" style="margin-top: 0.5rem;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>⚡ Fatigue and Failure</h3>
+                <div class="interactive-element">
+                    <h4>Understanding Material Failure</h4>
+                    <p><strong>Fatigue:</strong> Progressive weakening under repeated loading</p>
+                    <p><strong>Creep:</strong> Time-dependent deformation under constant stress</p>
+                    <p><strong>Fracture:</strong> Ultimate failure when stress exceeds material limits</p>
+                    
+                    <div class="simulation-container">
+                        <h4>🔄 Fatigue Simulation</h4>
+                        <canvas id="fatigueDemo" class="simulation-canvas" width="400" height="200"></canvas>
+                        <div style="margin: 1rem 0;">
+                            <button class="btn success" onclick="startFatigueTest()">Start Fatigue Test</button>
+                            <button class="btn danger" onclick="stopFatigueTest()">Stop Test</button>
+                        </div>
+                        <div class="result-display">
+                            <div>Load Cycles: <span id="cycleCount">0</span></div>
+                            <div>Material Integrity: <span id="integrityLevel">100</span>%</div>
+                            <div>Status: <span id="fatigueStatus">Testing...</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 2.4: Assessment -->
+            <div class="topic" id="topic4">
+                <h2>✅ Topic 2.4: Assessment & Practice</h2>
+                
+                <p>Test your understanding of solids and elasticity concepts!</p>
+
+                <div class="learning-objectives" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
+                    <div style="font-size: 1.2rem; margin-bottom: 1rem; font-weight: bold;">
+                        Question 1: A steel wire of length 2 m and cross-sectional area 1 mm² is stretched by 2 mm when a force of 100 N is applied. Calculate Young's modulus.
+                    </div>
+                    <div style="margin: 1rem 0;">
+                        <button class="btn" onclick="checkProblem1('200')">200 GPa</button>
+                        <button class="btn" onclick="checkProblem1('100')">100 GPa</button>
+                        <button class="btn" onclick="checkProblem1('150')">150 GPa</button>
+                        <button class="btn" onclick="checkProblem1('250')">250 GPa</button>
+                    </div>
+                    <div id="problem1Result" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="learning-objectives" style="background: linear-gradient(135deg, #fd79a8, #fdcb6e);">
+                    <div style="font-size: 1.2rem; margin-bottom: 1rem; font-weight: bold;">
+                        Question 2: Which material property determines resistance to shape change under shear stress?
+                    </div>
+                    <div style="margin: 1rem 0;">
+                        <button class="btn" onclick="checkProblem2('young')">Young's Modulus</button>
+                        <button class="btn" onclick="checkProblem2('bulk')">Bulk Modulus</button>
+                        <button class="btn" onclick="checkProblem2('shear')">Shear Modulus</button>
+                        <button class="btn" onclick="checkProblem2('poisson')">Poisson's Ratio</button>
+                    </div>
+                    <div id="problem2Result" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>🧮 Problem Solver: Stress Analysis</h3>
+                    <p>Solve this engineering problem step by step:</p>
+                    <div style="background: rgba(142, 68, 173, 0.1); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                        <h4>Problem: Bridge Cable Analysis</h4>
+                        <p>A bridge cable made of steel (E = 200 GPa) has:</p>
+                        <ul>
+                            <li>Original length: 50 m</li>
+                            <li>Cross-sectional area: 0.1 m²</li>
+                            <li>Applied tension force: 2 MN</li>
+                        </ul>
+                        <p><strong>Find:</strong> The extension of the cable</p>
+                    </div>
+                    
+                    <div style="margin: 1rem 0;">
+                        <label>Your calculation (extension in mm): </label>
+                        <input type="number" id="bridgeProblem" step="0.1" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin: 0.5rem;">
+                        <button class="btn success" onclick="checkBridgeProblem()">Submit Answer</button>
+                    </div>
+                    
+                    <div id="bridgeResults" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="learning-objectives" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                    <h3>🎉 Chapter Summary</h3>
+                    <p>Congratulations! You have mastered:</p>
+                    <ul>
+                        <li>✅ Stress and strain relationships in materials</li>
+                        <li>✅ Young's modulus, bulk modulus, and shear modulus</li>
+                        <li>✅ Hooke's law and elastic behavior</li>
+                        <li>✅ Material properties and classifications</li>
+                        <li>✅ Practical applications in engineering</li>
+                    </ul>
+                    <p><strong>Ready for Chapter 3: Fluids!</strong></p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Interactive Physics: Chapter 2 - Solids and Elasticity</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentTopic = 1;
+        let fatigueAnimation = null;
+        let cycleCount = 0;
+
+        // Topic navigation
+        function showTopic(topicNum) {
+            const topics = document.querySelectorAll('.topic');
+            topics.forEach(topic => topic.classList.remove('active'));
+            
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('topic' + topicNum).classList.add('active');
+            navBtns[topicNum - 1].classList.add('active');
+            
+            currentTopic = topicNum;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentTopic / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Navigation functions
+        function previousChapter() {
+            alert('Navigate to Chapter 1: Physics and Measurements');
+        }
+
+        function nextChapter() {
+            alert('Navigate to Chapter 3: Fluids');
+        }
+
+        // Stress-strain demo
+        function updateStressStrain() {
+            const force = parseFloat(document.getElementById('forceSlider').value);
+            const area = parseFloat(document.getElementById('areaSlider').value);
+            
+            const stress = force / area;
+            const strain = stress / 200000000000; // Assuming steel E = 200 GPa
+            const extension = strain * 1000; // Assuming 1m original length, convert to mm
+            
+            document.getElementById('forceValue').textContent = force;
+            document.getElementById('areaValue').textContent = area.toFixed(3);
+            document.getElementById('stressValue').textContent = Math.round(stress);
+            document.getElementById('strainValue').textContent = strain.toFixed(6);
+            document.getElementById('extensionValue').textContent = extension.toFixed(3);
+        }
+
+        function animateDeformation() {
+            const canvas = document.getElementById('stressStrainDemo');
+            const ctx = canvas.getContext('2d');
+            const force = parseFloat(document.getElementById('forceSlider').value);
+            const originalLength = 200;
+            const extension = (force / 1000) * 20; // Scale for visualization
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw original specimen (dotted)
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.strokeRect(100, 100, 40, originalLength);
+            
+            // Draw deformed specimen
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([]);
+            ctx.strokeRect(100, 100, 40, originalLength + extension);
+            
+            // Draw force arrows
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 4;
+            // Top arrow
+            ctx.beginPath();
+            ctx.moveTo(120, 80);
+            ctx.lineTo(120, 100);
+            ctx.stroke();
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(115, 95);
+            ctx.lineTo(120, 100);
+            ctx.lineTo(125, 95);
+            ctx.stroke();
+            
+            // Bottom arrow
+            ctx.beginPath();
+            ctx.moveTo(120, originalLength + extension + 120);
+            ctx.lineTo(120, originalLength + extension + 100);
+            ctx.stroke();
+            // Arrow head
+            ctx.beginPath();
+            ctx.moveTo(115, originalLength + extension + 105);
+            ctx.lineTo(120, originalLength + extension + 100);
+            ctx.lineTo(125, originalLength + extension + 105);
+            ctx.stroke();
+            
+            // Labels
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '14px Arial';
+            ctx.fillText('F', 125, 90);
+            ctx.fillText('F', 125, originalLength + extension + 115);
+            ctx.fillText('Original', 150, 120);
+            ctx.fillText('Deformed', 150, 140);
+        }
+
+        function resetDeformation() {
+            const canvas = document.getElementById('stressStrainDemo');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Reset sliders
+            document.getElementById('forceSlider').value = 100;
+            document.getElementById('areaSlider').value = 0.01;
+            updateStressStrain();
+        }
+
+        // Event listeners for sliders
+        document.getElementById('forceSlider').addEventListener('input', updateStressStrain);
+        document.getElementById('areaSlider').addEventListener('input', updateStressStrain);
+
+        // Stress-strain curve visualization
+        function showMaterialCurve(material) {
+            const canvas = document.getElementById('stressStrainCurve');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw axes
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, 250);
+            ctx.lineTo(450, 250);
+            ctx.stroke();
+            
+            // Axis labels
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '14px Arial';
+            ctx.fillText('Strain', 400, 270);
+            ctx.save();
+            ctx.translate(20, 150);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('Stress (MPa)', 0, 0);
+            ctx.restore();
+            
+            const materials = {
+                steel: { color: '#34495e', points: [[0,0], [100,100], [150,120], [200,150], [180,180]], elastic: 250, ultimate: 400 },
+                aluminum: { color: '#95a5a6', points: [[0,0], [150,100], [200,110], [250,130], [220,160]], elastic: 200, ultimate: 300 },
+                rubber: { color: '#e74c3c', points: [[0,0], [300,20], [400,40], [450,60], [400,80]], elastic: 10, ultimate: 25 }
+            };
+            
+            if (material === 'all') {
+                Object.keys(materials).forEach(mat => drawCurve(ctx, materials[mat], mat));
+                document.getElementById('selectedMaterial').textContent = 'All Materials';
+                document.getElementById('elasticLimit').textContent = 'Various';
+                document.getElementById('ultimateStrength').textContent = 'Various';
+            } else {
+                drawCurve(ctx, materials[material], material);
+                document.getElementById('selectedMaterial').textContent = material.charAt(0).toUpperCase() + material.slice(1);
+                document.getElementById('elasticLimit').textContent = materials[material].elastic;
+                document.getElementById('ultimateStrength').textContent = materials[material].ultimate;
+            }
+        }
+
+        function drawCurve(ctx, material, name) {
+            ctx.strokeStyle = material.color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const points = material.points;
+            ctx.moveTo(50 + points[0][0], 250 - points[0][1]);
+            
+            for (let i = 1; i < points.length; i++) {
+                ctx.lineTo(50 + points[i][0], 250 - points[i][1]);
+            }
+            ctx.stroke();
+            
+            // Legend
+            const legendY = 70 + Object.keys({steel:1,aluminum:1,rubber:1}).indexOf(name) * 20;
+            ctx.fillStyle = material.color;
+            ctx.fillRect(350, legendY - 5, 15, 10);
+            ctx.fillStyle = '#2c3e50';
+            ctx.fillText(name.charAt(0).toUpperCase() + name.slice(1), 370, legendY + 5);
+        }
+
+        // Young's modulus calculator
+        function calculateModulus() {
+            const force = parseFloat(document.getElementById('calcForce').value);
+            const area = parseFloat(document.getElementById('calcArea').value);
+            const length = parseFloat(document.getElementById('calcLength').value);
+            const extension = parseFloat(document.getElementById('calcExtension').value);
+            
+            const stress = force / area;
+            const strain = extension / length;
+            const youngsModulus = stress / strain;
+            
+            document.getElementById('calcStress').textContent = stress.toExponential(2);
+            document.getElementById('calcStrain').textContent = strain.toExponential(4);
+            document.getElementById('calcYoungsModulus').textContent = youngsModulus.toExponential(2);
+            
+            document.getElementById('modulusResult').classList.remove('hidden');
+        }
+
+        // Hooke's law demo
+        function updateHooksLaw() {
+            const mass = parseFloat(document.getElementById('massSlider').value);
+            const springConstant = parseFloat(document.getElementById('springSlider').value);
+            
+            const force = mass * 9.8;
+            const extension = force / springConstant;
+            const energy = 0.5 * springConstant * extension * extension;
+            
+            document.getElementById('massValue').textContent = mass.toFixed(1);
+            document.getElementById('springConstant').textContent = springConstant;
+            document.getElementById('springForce').textContent = force.toFixed(1);
+            document.getElementById('springExtension').textContent = extension.toFixed(3);
+            document.getElementById('springEnergy').textContent = energy.toFixed(2);
+            
+            // Draw spring visualization
+            const canvas = document.getElementById('hooksLawDemo');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw ceiling
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(50, 20);
+            ctx.lineTo(250, 20);
+            ctx.stroke();
+            
+            // Draw spring
+            const springLength = 100 + extension * 500; // Scale for visualization
+            drawSpring(ctx, 150, 20, springLength, 8);
+            
+            // Draw mass
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(130, 20 + springLength, 40, 40);
+            
+            // Labels
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '12px Arial';
+            ctx.fillText(`${mass} kg`, 135, 20 + springLength + 55);
+            ctx.fillText(`F = ${force.toFixed(1)} N`, 10, 100);
+            ctx.fillText(`x = ${(extension*100).toFixed(1)} cm`, 10, 120);
+        }
+
+        function drawSpring(ctx, x, y, length, coils) {
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            const coilHeight = length / coils;
+            ctx.moveTo(x, y);
+            
+            for (let i = 0; i < coils; i++) {
+                const yPos = y + i * coilHeight;
+                ctx.lineTo(x - 20, yPos + coilHeight/4);
+                ctx.lineTo(x + 20, yPos + 3*coilHeight/4);
+                ctx.lineTo(x, yPos + coilHeight);
+            }
+            ctx.stroke();
+        }
+
+        // Event listeners for Hooke's law sliders
+        document.getElementById('massSlider').addEventListener('input', updateHooksLaw);
+        document.getElementById('springSlider').addEventListener('input', updateHooksLaw);
+
+        // Material selection
+        function selectMaterial(application, material) {
+            const results = {
+                bridge: {
+                    steel: { correct: true, message: "Excellent choice! Steel has high tensile strength and good ductility for bridge cables." },
+                    aluminum: { correct: false, message: "While lightweight, aluminum may not have sufficient tensile strength for large bridge cables." },
+                    concrete: { correct: false, message: "Concrete is excellent in compression but poor in tension - not suitable for cables." }
+                },
+                window: {
+                    glass: { correct: true, message: "Perfect! Glass is transparent, rigid, and provides a smooth surface ideal for windows." },
+                    plastic: { correct: false, message: "While transparent, plastic may lack the rigidity and scratch resistance needed." },
+                    steel: { correct: false, message: "Steel is strong but opaque - not suitable for windows!" }
+                }
+            };
+            
+            const result = results[application][material];
+            const resultDiv = document.getElementById(application + 'Result');
+            
+            resultDiv.innerHTML = `<strong>${result.correct ? '✅ Correct!' : '❌ Not ideal:'}</strong> ${result.message}`;
+            resultDiv.style.color = result.correct ? '#27ae60' : '#e74c3c';
+            resultDiv.classList.remove('hidden');
+        }
+
+        // Fatigue test simulation
+        function startFatigueTest() {
+            if (fatigueAnimation) return;
+            
+            cycleCount = 0;
+            const canvas = document.getElementById('fatigueDemo');
+            const ctx = canvas.getContext('2d');
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                cycleCount += 10;
+                const integrity = Math.max(0, 100 - (cycleCount / 10000) * 100);
+                
+                // Draw specimen
+                const crack = (100 - integrity) / 100 * 50;
+                ctx.strokeStyle = integrity > 50 ? '#27ae60' : integrity > 20 ? '#f39c12' : '#e74c3c';
+                ctx.lineWidth = 6;
+                ctx.strokeRect(150, 80, 100, 40);
+                
+                // Draw crack
+                if (crack > 0) {
+                    ctx.strokeStyle = '#e74c3c';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(150, 100);
+                    ctx.lineTo(150 + crack, 100);
+                    ctx.stroke();
+                }
+                
+                // Draw load arrows (oscillating)
+                const loadPhase = Math.sin(cycleCount * 0.1) * 0.5 + 0.5;
+                const arrowLength = 30 + loadPhase * 20;
+                
+                ctx.strokeStyle = '#3498db';
+                ctx.lineWidth = 3;
+                // Top arrow
+                ctx.beginPath();
+                ctx.moveTo(200, 50);
+                ctx.lineTo(200, 80 - arrowLength);
+                ctx.stroke();
+                
+                // Bottom arrow
+                ctx.beginPath();
+                ctx.moveTo(200, 150);
+                ctx.lineTo(200, 120 + arrowLength);
+                ctx.stroke();
+                
+                // Update display
+                document.getElementById('cycleCount').textContent = cycleCount.toLocaleString();
+                document.getElementById('integrityLevel').textContent = Math.round(integrity);
+                
+                if (integrity <= 0) {
+                    document.getElementById('fatigueStatus').textContent = 'FAILED!';
+                    document.getElementById('fatigueStatus').style.color = '#e74c3c';
+                    stopFatigueTest();
+                    return;
+                } else if (integrity < 20) {
+                    document.getElementById('fatigueStatus').textContent = 'Critical';
+                    document.getElementById('fatigueStatus').style.color = '#e74c3c';
+                } else if (integrity < 50) {
+                    document.getElementById('fatigueStatus').textContent = 'Warning';
+                    document.getElementById('fatigueStatus').style.color = '#f39c12';
+                } else {
+                    document.getElementById('fatigueStatus').textContent = 'Good';
+                    document.getElementById('fatigueStatus').style.color = '#27ae60';
+                }
+                
+                fatigueAnimation = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function stopFatigueTest() {
+            if (fatigueAnimation) {
+                cancelAnimationFrame(fatigueAnimation);
+                fatigueAnimation = null;
+            }
+        }
+
+        // Assessment functions
+        function checkProblem1(answer) {
+            const resultDiv = document.getElementById('problem1Result');
+            
+            // Calculation: E = FL₀/(AΔL) = (100)(2)/((1×10⁻⁶)(0.002)) = 200/(2×10⁻⁹) = 10¹¹ Pa = 100 GPa
+            // Wait, let me recalculate: E = (100 N)(2 m)/((1×10⁻⁶ m²)(0.002 m)) = 200/(2×10⁻⁹) = 10¹¹ Pa = 100 GPa
+            
+            if (answer === '100') {
+                resultDiv.innerHTML = `
+                    <strong>✅ Correct!</strong><br>
+                    <strong>Solution:</strong><br>
+                    E = FL₀/(AΔL)<br>
+                    E = (100 N)(2 m)/((1×10⁻⁶ m²)(0.002 m))<br>
+                    E = 200/(2×10⁻⁹) = 1×10¹¹ Pa = 100 GPa
+                `;
+                resultDiv.style.background = 'rgba(39, 174, 96, 0.8)';
+            } else {
+                resultDiv.innerHTML = `
+                    <strong>❌ Incorrect</strong><br>
+                    The correct answer is 100 GPa.<br>
+                    Remember: E = FL₀/(AΔL)<br>
+                    Check your unit conversions!
+                `;
+                resultDiv.style.background = 'rgba(231, 76, 60, 0.8)';
+            }
+            resultDiv.classList.remove('hidden');
+        }
+
+        function checkProblem2(answer) {
+            const resultDiv = document.getElementById('problem2Result');
+            
+            if (answer === 'shear') {
+                resultDiv.innerHTML = `
+                    <strong>✅ Correct!</strong><br>
+                    Shear modulus (G) determines a material's resistance to shape change under shear stress.
+                    It's defined as G = τ/γ (shear stress/shear strain).
+                `;
+                resultDiv.style.background = 'rgba(39, 174, 96, 0.8)';
+            } else {
+                resultDiv.innerHTML = `
+                    <strong>❌ Incorrect</strong><br>
+                    The correct answer is Shear Modulus.<br>
+                    Young's modulus is for tensile/compressive stress, Bulk modulus is for volumetric stress.
+                `;
+                resultDiv.style.background = 'rgba(231, 76, 60, 0.8)';
+            }
+            resultDiv.classList.remove('hidden');
+        }
+
+        function checkBridgeProblem() {
+            const userAnswer = parseFloat(document.getElementById('bridgeProblem').value);
+            const resultDiv = document.getElementById('bridgeResults');
+            
+            // Calculation: ΔL = FL₀/(EA) = (2×10⁶ N)(50 m)/((200×10⁹ Pa)(0.1 m²))
+            // ΔL = 1×10⁸/(2×10¹⁰) = 0.005 m = 5 mm
+            const correctAnswer = 5.0; // mm
+            
+            if (Math.abs(userAnswer - correctAnswer) < 0.5) {
+                resultDiv.innerHTML = `
+                    <strong>✅ Excellent work!</strong><br>
+                    <strong>Solution:</strong><br>
+                    ΔL = FL₀/(EA)<br>
+                    ΔL = (2×10⁶ N)(50 m)/((200×10⁹ Pa)(0.1 m²))<br>
+                    ΔL = 1×10⁸/(2×10¹⁰) = 0.005 m = 5.0 mm<br>
+                    <br>This small extension shows why steel is excellent for structural applications!
+                `;
+                resultDiv.style.background = '#27ae60';
+            } else {
+                resultDiv.innerHTML = `
+                    <strong>❌ Not quite right</strong><br>
+                    The correct answer is 5.0 mm.<br>
+                    <strong>Hint:</strong> Use ΔL = FL₀/(EA)<br>
+                    Remember to convert units properly:<br>
+                    F = 2 MN = 2×10⁶ N<br>
+                    E = 200 GPa = 200×10⁹ Pa
+                `;
+                resultDiv.style.background = '#e74c3c';
+            }
+            resultDiv.style.display = 'block';
+            resultDiv.style.color = 'white';
+            resultDiv.style.padding = '1rem';
+            resultDiv.style.borderRadius = '8px';
+        }
+
+        // Initialize
+        updateProgress();
+        updateStressStrain();
+        updateHooksLaw();
+        showMaterialCurve('steel');
+        
+        // Draw initial stress-strain demo
+        setTimeout(() => {
+            animateDeformation();
+        }, 500);
+    </script>
+</body>
+</html>
