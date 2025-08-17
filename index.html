@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Physics Learning Book</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .navigation {
+            background: #34495e;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn.active {
+            background: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .content {
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        .chapter {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chapter h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .chapter h3 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .interactive-element {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .simulation-container {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .simulation-canvas {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            background: rgba(255,255,255,0.2);
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-options li:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+
+        .quiz-options li.correct {
+            background: #27ae60 !important;
+            color: white;
+        }
+
+        .quiz-options li.incorrect {
+            background: #e74c3c !important;
+            color: white;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .physics-formula {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 5px solid #e17055;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0.5rem 0;
+            font-family: 'Times New Roman', serif;
+        }
+
+        .slider-container {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            margin: 0.5rem 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+        }
+
+        .experiment-box {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn.danger {
+            background: #e74c3c;
+        }
+
+        .btn.danger:hover {
+            background: #c0392b;
+        }
+
+        .btn.success {
+            background: #27ae60;
+        }
+
+        .btn.success:hover {
+            background: #229954;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .physics-unit {
+            background: rgba(52, 152, 219, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 0.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                display: block;
+                margin: 5px 0;
+                width: 100%;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>⚛️ Interactive Physics Book</h1>
+            <p>Discover the Laws of Nature Through Interactive Learning</p>
+        </header>
+
+        <nav class="navigation">
+            <button class="nav-btn active" onclick="showChapter(1)">Motion & Kinematics</button>
+            <button class="nav-btn" onclick="showChapter(2)">Forces & Dynamics</button>
+            <button class="nav-btn" onclick="showChapter(3)">Energy & Work</button>
+            <button class="nav-btn" onclick="showChapter(4)">Practice & Assessment</button>
+        </nav>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <main class="content">
+            <!-- Chapter 1: Motion & Kinematics -->
+            <div class="chapter active" id="chapter1">
+                <h2>🚀 Chapter 1: Motion & Kinematics</h2>
+                
+                <p>Motion is everywhere around us! From the orbit of planets to the fall of an apple, understanding motion is fundamental to physics.</p>
+                
+                <div class="physics-formula">
+                    <h3>📐 Key Equations</h3>
+                    <div class="formula">v = u + at</div>
+                    <div class="formula">s = ut + ½at²</div>
+                    <div class="formula">v² = u² + 2as</div>
+                    <p><strong>Where:</strong> v = final velocity, u = initial velocity, a = acceleration, t = time, s = displacement</p>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🎯 Interactive Simulation: Free Fall</h3>
+                    <p>Adjust the height and watch the ball fall!</p>
+                    <canvas id="fallSimulation" class="simulation-canvas" width="400" height="300"></canvas>
+                    <div class="slider-container">
+                        <label>Height: <span id="heightValue">150</span> m</label>
+                        <input type="range" id="heightSlider" class="slider" min="50" max="250" value="150">
+                    </div>
+                    <button class="btn" onclick="startFall()">Drop Ball</button>
+                    <button class="btn danger" onclick="resetFall()">Reset</button>
+                    <div id="fallResults" style="margin-top: 1rem; background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px;">
+                        <strong>Results:</strong><br>
+                        Time to fall: <span id="fallTime">0</span> s<br>
+                        Final velocity: <span id="finalVelocity">0</span> m/s
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>🧮 Velocity Calculator</h3>
+                    <p>Calculate velocity using different kinematic equations:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                        <div>
+                            <label>Initial Velocity (u): </label>
+                            <input type="number" id="initialVel" value="0" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">m/s</span>
+                        </div>
+                        <div>
+                            <label>Acceleration (a): </label>
+                            <input type="number" id="acceleration" value="9.8" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">m/s²</span>
+                        </div>
+                        <div>
+                            <label>Time (t): </label>
+                            <input type="number" id="time" value="1" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">s</span>
+                        </div>
+                        <div>
+                            <button class="btn success" onclick="calculateVelocity()">Calculate Final Velocity</button>
+                        </div>
+                    </div>
+                    <div id="velocityResult" style="background: #27ae60; color: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; display: none;">
+                        <strong>Final Velocity: <span id="finalVelResult">0</span> m/s</strong>
+                    </div>
+                </div>
+
+                <h3>Real-World Applications</h3>
+                <p>Kinematics helps us understand:</p>
+                <ul>
+                    <li><strong>Space missions:</strong> Calculating trajectories for rockets and satellites</li>
+                    <li><strong>Sports:</strong> Analyzing the motion of projectiles in basketball, soccer, etc.</li>
+                    <li><strong>Transportation:</strong> Designing safe braking distances for vehicles</li>
+                    <li><strong>Animation:</strong> Creating realistic motion in movies and games</li>
+                </ul>
+            </div>
+
+            <!-- Chapter 2: Forces & Dynamics -->
+            <div class="chapter" id="chapter2">
+                <h2>💪 Chapter 2: Forces & Dynamics</h2>
+                
+                <p>Forces are the cause of motion. Newton's laws help us understand how forces affect the motion of objects.</p>
+
+                <div class="physics-formula">
+                    <h3>⚖️ Newton's Laws</h3>
+                    <div class="formula">1st Law: F = 0 → a = 0</div>
+                    <div class="formula">2nd Law: F = ma</div>
+                    <div class="formula">3rd Law: F₁₂ = -F₂₁</div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🎯 Force Simulation: Push the Block</h3>
+                    <p>Apply different forces and see how acceleration changes!</p>
+                    <canvas id="forceSimulation" class="simulation-canvas" width="400" height="200"></canvas>
+                    <div class="slider-container">
+                        <label>Applied Force: <span id="forceValue">50</span> N</label>
+                        <input type="range" id="forceSlider" class="slider" min="0" max="200" value="50">
+                        <br>
+                        <label>Mass: <span id="massValue">10</span> kg</label>
+                        <input type="range" id="massSlider" class="slider" min="5" max="50" value="10">
+                    </div>
+                    <button class="btn" onclick="applyForce()">Apply Force</button>
+                    <button class="btn danger" onclick="stopForce()">Stop</button>
+                    <div id="forceResults" style="margin-top: 1rem; background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px;">
+                        <strong>Results:</strong><br>
+                        Acceleration: <span id="acceleration-result">0</span> m/s²<br>
+                        Current Velocity: <span id="current-velocity">0</span> m/s
+                    </div>
+                </div>
+
+                <div class="experiment-box">
+                    <h3>🔬 Virtual Experiment: Friction Force</h3>
+                    <p>Investigate how different surfaces affect friction!</p>
+                    <div style="display: flex; justify-content: space-around; margin: 1rem 0;">
+                        <button class="btn" onclick="setSurface('ice', 0.1)">Ice (μ=0.1)</button>
+                        <button class="btn" onclick="setSurface('wood', 0.3)">Wood (μ=0.3)</button>
+                        <button class="btn" onclick="setSurface('rubber', 0.7)">Rubber (μ=0.7)</button>
+                    </div>
+                    <div id="frictionDemo" style="background: #3498db; height: 60px; width: 100%; border-radius: 8px; position: relative; margin: 1rem 0;">
+                        <div id="frictionBlock" style="background: #e74c3c; width: 40px; height: 40px; border-radius: 5px; position: absolute; top: 10px; left: 10px; transition: all 1s ease;"></div>
+                    </div>
+                    <p id="frictionInfo">Surface: None selected | Friction coefficient: 0</p>
+                </div>
+
+                <h3>Types of Forces</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1rem 0;">
+                    <div class="interactive-element">
+                        <h4>🌍 Gravitational Force</h4>
+                        <p>F = mg = <span class="physics-unit">Weight</span></p>
+                        <p>Always points toward Earth's center</p>
+                    </div>
+                    <div class="interactive-element">
+                        <h4>🤲 Normal Force</h4>
+                        <p>F = mg cos θ</p>
+                        <p>Perpendicular to the surface</p>
+                    </div>
+                    <div class="interactive-element">
+                        <h4>↔️ Friction Force</h4>
+                        <p>F = μN</p>
+                        <p>Opposes relative motion</p>
+                    </div>
+                    <div class="interactive-element">
+                        <h4>🏹 Applied Force</h4>
+                        <p>External force applied to object</p>
+                        <p>Can be in any direction</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 3: Energy & Work -->
+            <div class="chapter" id="chapter3">
+                <h2>⚡ Chapter 3: Energy & Work</h2>
+                
+                <p>Energy is the ability to do work. It exists in many forms and can be converted from one type to another.</p>
+
+                <div class="physics-formula">
+                    <h3>🔋 Energy Equations</h3>
+                    <div class="formula">KE = ½mv²</div>
+                    <div class="formula">PE = mgh</div>
+                    <div class="formula">W = F·d·cos θ</div>
+                    <div class="formula">P = W/t</div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🎢 Energy Conservation: Pendulum</h3>
+                    <p>Watch how kinetic and potential energy transform in a swinging pendulum!</p>
+                    <canvas id="pendulumSimulation" class="simulation-canvas" width="400" height="300"></canvas>
+                    <div class="slider-container">
+                        <label>Release Angle: <span id="angleValue">45</span>°</label>
+                        <input type="range" id="angleSlider" class="slider" min="15" max="75" value="45">
+                    </div>
+                    <button class="btn" onclick="startPendulum()">Start Pendulum</button>
+                    <button class="btn danger" onclick="stopPendulum()">Stop</button>
+                    <div id="energyDisplay" style="margin-top: 1rem; background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px;">
+                        <strong>Energy Analysis:</strong><br>
+                        Kinetic Energy: <span id="kineticEnergy">0</span> J<br>
+                        Potential Energy: <span id="potentialEnergy">0</span> J<br>
+                        Total Energy: <span id="totalEnergy">0</span> J
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>⚙️ Work Calculator</h3>
+                    <p>Calculate work done by a force:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label>Force (F): </label>
+                            <input type="number" id="workForce" value="100" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">N</span>
+                        </div>
+                        <div>
+                            <label>Distance (d): </label>
+                            <input type="number" id="workDistance" value="5" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">m</span>
+                        </div>
+                        <div>
+                            <label>Angle (θ): </label>
+                            <input type="number" id="workAngle" value="0" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <span class="physics-unit">degrees</span>
+                        </div>
+                        <div>
+                            <button class="btn success" onclick="calculateWork()">Calculate Work</button>
+                        </div>
+                    </div>
+                    <div id="workResult" style="background: #27ae60; color: white; padding: 1rem; border-radius: 8px; margin-top: 1rem; display: none;">
+                        <strong>Work Done: <span id="workValue">0</span> J</strong>
+                    </div>
+                </div>
+
+                <div class="experiment-box">
+                    <h3>🔄 Energy Transformation Examples</h3>
+                    <p>Click on each example to see energy transformations:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="btn" onclick="showEnergyTransform('battery')">🔋 Battery</div>
+                        <div class="btn" onclick="showEnergyTransform('solar')">☀️ Solar Panel</div>
+                        <div class="btn" onclick="showEnergyTransform('wind')">💨 Wind Turbine</div>
+                        <div class="btn" onclick="showEnergyTransform('hydro')">💧 Hydroelectric</div>
+                    </div>
+                    <div id="energyTransformInfo" style="margin-top: 1rem; padding: 1rem; background: rgba(52, 152, 219, 0.1); border-radius: 8px; display: none;">
+                        <p id="energyTransformText"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter 4: Practice & Assessment -->
+            <div class="chapter" id="chapter4">
+                <h2>✅ Chapter 4: Practice & Assessment</h2>
+                
+                <p>Test your understanding of physics concepts with these interactive problems!</p>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        Question 1: A car accelerates from 0 to 30 m/s in 6 seconds. What is its acceleration?
+                    </div>
+                    <ul class="quiz-options">
+                        <li onclick="checkAnswer(this, false)">A) 3 m/s²</li>
+                        <li onclick="checkAnswer(this, true)">B) 5 m/s²</li>
+                        <li onclick="checkAnswer(this, false)">C) 6 m/s²</li>
+                        <li onclick="checkAnswer(this, false)">D) 30 m/s²</li>
+                    </ul>
+                    <div id="feedback1" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Correct! Using v = u + at: 30 = 0 + a(6), so a = 5 m/s²
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        Question 2: According to Newton's second law, if the net force on an object doubles while mass stays constant, the acceleration:
+                    </div>
+                    <ul class="quiz-options">
+                        <li onclick="checkAnswer(this, false)">A) Stays the same</li>
+                        <li onclick="checkAnswer(this, true)">B) Doubles</li>
+                        <li onclick="checkAnswer(this, false)">C) Becomes half</li>
+                        <li onclick="checkAnswer(this, false)">D) Becomes zero</li>
+                    </ul>
+                    <div id="feedback2" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Correct! F = ma, so if F doubles and m is constant, then a must double too.
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        Question 3: A 2 kg ball is dropped from 20 m height. What is its kinetic energy just before hitting the ground? (g = 10 m/s²)
+                    </div>
+                    <ul class="quiz-options">
+                        <li onclick="checkAnswer(this, false)">A) 200 J</li>
+                        <li onclick="checkAnswer(this, true)">B) 400 J</li>
+                        <li onclick="checkAnswer(this, false)">C) 40 J</li>
+                        <li onclick="checkAnswer(this, false)">D) 800 J</li>
+                    </ul>
+                    <div id="feedback3" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Correct! By conservation of energy: PE = KE = mgh = 2 × 10 × 20 = 400 J
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>🧪 Problem Solver</h3>
+                    <p>Solve this projectile motion problem:</p>
+                    <div class="physics-formula">
+                        <p>A ball is thrown horizontally from a 45 m high cliff with an initial velocity of 20 m/s.</p>
+                        <p>Calculate: (1) Time of flight, (2) Horizontal distance traveled</p>
+                    </div>
+                    <div style="margin: 1rem 0;">
+                        <label>Time of flight: </label>
+                        <input type="number" id="timeAnswer" placeholder="Enter time in seconds" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin: 0.5rem;">
+                        <span class="physics-unit">s</span><br>
+                        
+                        <label>Horizontal distance: </label>
+                        <input type="number" id="distanceAnswer" placeholder="Enter distance in meters" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin: 0.5rem;">
+                        <span class="physics-unit">m</span><br>
+                        
+                        <button class="btn success" onclick="checkProjectileAnswers()">Check Answers</button>
+                    </div>
+                    <div id="projectileResults" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: 8px;">
+                    </div>
+                </div>
+
+                <div class="physics-formula">
+                    <h3>🎉 Congratulations!</h3>
+                    <p>You've completed the Interactive Physics Book! You now understand:</p>
+                    <ul style="text-align: left; margin: 1rem 0;">
+                        <li>Kinematics and equations of motion</li>
+                        <li>Newton's laws and force dynamics</li>
+                        <li>Energy conservation and work-energy theorem</li>
+                        <li>Problem-solving techniques in physics</li>
+                    </ul>
+                    <p>Keep exploring and experimenting with physics concepts!</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Interactive Physics Book. Inspiring Future Physicists!</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        let animationRunning = false;
+
+        // Chapter navigation
+        function showChapter(chapterNum) {
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(ch => ch.classList.remove('active'));
+            
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('chapter' + chapterNum).classList.add('active');
+            navBtns[chapterNum - 1].classList.add('active');
+            
+            currentChapter = chapterNum;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Free Fall Simulation
+        function startFall() {
+            const canvas = document.getElementById('fallSimulation');
+            const ctx = canvas.getContext('2d');
+            const height = parseFloat(document.getElementById('heightSlider').value);
+            
+            // Physics calculations
+            const g = 9.8; // acceleration due to gravity
+            const timeToFall = Math.sqrt(2 * height / g);
+            const finalVel = g * timeToFall;
+            
+            // Update results
+            document.getElementById('fallTime').textContent = timeToFall.toFixed(2);
+            document.getElementById('finalVelocity').textContent = finalVel.toFixed(2);
+            
+            // Animation
+            let startTime = Date.now();
+            let ballY = 50;
+            const groundY = canvas.height - 50;
+            const ballX = canvas.width / 2;
+            
+            function animate() {
+                const elapsed = (Date.now() - startTime) / 1000;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw ground
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+                
+                // Draw height markers
+                ctx.fillStyle = '#34495e';
+                ctx.font = '12px Arial';
+                ctx.fillText(height + 'm', 10, 60);
+                ctx.fillText('0m', 10, groundY - 5);
+                
+                if (elapsed < timeToFall) {
+                    // Calculate position using physics
+                    ballY = 50 + (0.5 * g * elapsed * elapsed * (groundY - 50) / height);
+                    
+                    // Draw ball
+                    ctx.beginPath();
+                    ctx.arc(ballX, ballY, 15, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.fill();
+                    
+                    // Draw motion trail
+                    ctx.strokeStyle = 'rgba(231, 76, 60, 0.3)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(ballX, 50);
+                    ctx.lineTo(ballX, ballY);
+                    ctx.stroke();
+                    
+                    requestAnimationFrame(animate);
+                } else {
+                    // Ball hits ground
+                    ctx.beginPath();
+                    ctx.arc(ballX, groundY - 15, 15, 0, 2 * Math.PI);
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.fill();
+                    
+                    // Impact effect
+                    ctx.fillStyle = 'rgba(241, 196, 15, 0.7)';
+                    ctx.beginPath();
+                    ctx.arc(ballX, groundY - 15, 25, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+            animate();
+        }
+        
+        function resetFall() {
+            const canvas = document.getElementById('fallSimulation');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw ground
+            ctx.fillStyle = '#27ae60';
+            const groundY = canvas.height - 50;
+            ctx.fillRect(0, groundY, canvas.width, canvas.height - groundY);
+            
+            // Draw ball at top
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, 65, 15, 0, 2 * Math.PI);
+            ctx.fillStyle = '#e74c3c';
+            ctx.fill();
+            
+            // Reset results
+            document.getElementById('fallTime').textContent = '0';
+            document.getElementById('finalVelocity').textContent = '0';
+        }
+
+        // Height slider update
+        document.getElementById('heightSlider').addEventListener('input', function(e) {
+            document.getElementById('heightValue').textContent = e.target.value;
+            resetFall();
+        });
+
+        // Velocity Calculator
+        function calculateVelocity() {
+            const u = parseFloat(document.getElementById('initialVel').value) || 0;
+            const a = parseFloat(document.getElementById('acceleration').value) || 0;
+            const t = parseFloat(document.getElementById('time').value) || 0;
+            
+            const v = u + a * t;
+            
+            document.getElementById('finalVelResult').textContent = v.toFixed(2);
+            document.getElementById('velocityResult').style.display = 'block';
+        }
+
+        // Force Simulation
+        let forceAnimation = null;
+        let blockPosition = 10;
+        let blockVelocity = 0;
+
+        function applyForce() {
+            const force = parseFloat(document.getElementById('forceSlider').value);
+            const mass = parseFloat(document.getElementById('massSlider').value);
+            const acceleration = force / mass;
+            
+            document.getElementById('acceleration-result').textContent = acceleration.toFixed(2);
+            
+            const canvas = document.getElementById('forceSimulation');
+            const ctx = canvas.getContext('2d');
+            
+            if (forceAnimation) cancelAnimationFrame(forceAnimation);
+            
+            let startTime = Date.now();
+            
+            function animate() {
+                const elapsed = (Date.now() - startTime) / 1000;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Update physics
+                blockVelocity = acceleration * elapsed;
+                blockPosition = 10 + 0.5 * acceleration * elapsed * elapsed;
+                
+                // Keep block in bounds
+                if (blockPosition > canvas.width - 50) {
+                    blockPosition = canvas.width - 50;
+                    blockVelocity = 0;
+                }
+                
+                // Draw ground
+                ctx.fillStyle = '#95a5a6';
+                ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+                
+                // Draw block
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(blockPosition, canvas.height - 60, 40, 40);
+                
+                // Draw force arrow
+                if (force > 0) {
+                    ctx.strokeStyle = '#e74c3c';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(blockPosition - 20, canvas.height - 40);
+                    ctx.lineTo(blockPosition - 20 + force / 4, canvas.height - 40);
+                    ctx.stroke();
+                    
+                    // Arrow head
+                    ctx.fillStyle = '#e74c3c';
+                    ctx.beginPath();
+                    ctx.moveTo(blockPosition - 20 + force / 4, canvas.height - 40);
+                    ctx.lineTo(blockPosition - 20 + force / 4 - 10, canvas.height - 45);
+                    ctx.lineTo(blockPosition - 20 + force / 4 - 10, canvas.height - 35);
+                    ctx.fill();
+                }
+                
+                // Update velocity display
+                document.getElementById('current-velocity').textContent = blockVelocity.toFixed(2);
+                
+                if (blockPosition < canvas.width - 50) {
+                    forceAnimation = requestAnimationFrame(animate);
+                }
+            }
+            animate();
+        }
+
+        function stopForce() {
+            if (forceAnimation) {
+                cancelAnimationFrame(forceAnimation);
+                forceAnimation = null;
+            }
+            blockPosition = 10;
+            blockVelocity = 0;
+            document.getElementById('current-velocity').textContent = '0';
+            
+            // Reset canvas
+            const canvas = document.getElementById('forceSimulation');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw ground and block
+            ctx.fillStyle = '#95a5a6';
+            ctx.fillRect(0, canvas.height - 20, canvas.width, 20);
+            ctx.fillStyle = '#3498db';
+            ctx.fillRect(10, canvas.height - 60, 40, 40);
+        }
+
+        // Force and mass sliders
+        document.getElementById('forceSlider').addEventListener('input', function(e) {
+            document.getElementById('forceValue').textContent = e.target.value;
+        });
+
+        document.getElementById('massSlider').addEventListener('input', function(e) {
+            document.getElementById('massValue').textContent = e.target.value;
+        });
+
+        // Friction demonstration
+        function setSurface(surface, coefficient) {
+            const block = document.getElementById('frictionBlock');
+            const info = document.getElementById('frictionInfo');
+            
+            // Move block based on friction
+            const distance = (1 - coefficient) * 300 + 10; // Less friction = more distance
+            block.style.left = distance + 'px';
+            
+            info.textContent = `Surface: ${surface.charAt(0).toUpperCase() + surface.slice(1)} | Friction coefficient: ${coefficient}`;
+            
+            // Reset after animation
+            setTimeout(() => {
+                block.style.left = '10px';
+            }, 2000);
+        }
+
+        // Pendulum Simulation
+        let pendulumAnimation = null;
+        let pendulumAngle = 0;
+        let pendulumVelocity = 0;
+        const pendulumLength = 150;
+
+        function startPendulum() {
+            const canvas = document.getElementById('pendulumSimulation');
+            const ctx = canvas.getContext('2d');
+            const initialAngle = parseFloat(document.getElementById('angleSlider').value) * Math.PI / 180;
+            
+            if (pendulumAnimation) cancelAnimationFrame(pendulumAnimation);
+            
+            pendulumAngle = initialAngle;
+            pendulumVelocity = 0;
+            const centerX = canvas.width / 2;
+            const centerY = 50;
+            const mass = 2; // kg
+            const g = 9.8;
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Physics calculations
+                const acceleration = -(g / pendulumLength) * Math.sin(pendulumAngle);
+                pendulumVelocity += acceleration * 0.02;
+                pendulumAngle += pendulumVelocity * 0.02;
+                
+                // Calculate energy
+                const height = pendulumLength * (1 - Math.cos(pendulumAngle));
+                const velocity = pendulumVelocity * pendulumLength;
+                const ke = 0.5 * mass * velocity * velocity;
+                const pe = mass * g * height;
+                const total = ke + pe;
+                
+                // Update energy display
+                document.getElementById('kineticEnergy').textContent = ke.toFixed(2);
+                document.getElementById('potentialEnergy').textContent = pe.toFixed(2);
+                document.getElementById('totalEnergy').textContent = total.toFixed(2);
+                
+                // Draw pendulum
+                const bobX = centerX + pendulumLength * Math.sin(pendulumAngle);
+                const bobY = centerY + pendulumLength * Math.cos(pendulumAngle);
+                
+                // Draw string
+                ctx.strokeStyle = '#34495e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(bobX, bobY);
+                ctx.stroke();
+                
+                // Draw pivot
+                ctx.fillStyle = '#2c3e50';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 8, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw bob
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(bobX, bobY, 20, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw energy bars
+                const maxEnergy = mass * g * pendulumLength * (1 - Math.cos(initialAngle));
+                const keBarHeight = (ke / maxEnergy) * 100;
+                const peBarHeight = (pe / maxEnergy) * 100;
+                
+                // KE bar
+                ctx.fillStyle = '#3498db';
+                ctx.fillRect(10, canvas.height - 20, keBarHeight, 15);
+                ctx.fillStyle = '#2c3e50';
+                ctx.font = '12px Arial';
+                ctx.fillText('KE', 10, canvas.height - 25);
+                
+                // PE bar
+                ctx.fillStyle = '#27ae60';
+                ctx.fillRect(10, canvas.height - 40, peBarHeight, 15);
+                ctx.fillText('PE', 10, canvas.height - 45);
+                
+                pendulumAnimation = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function stopPendulum() {
+            if (pendulumAnimation) {
+                cancelAnimationFrame(pendulumAnimation);
+                pendulumAnimation = null;
+            }
+        }
+
+        document.getElementById('angleSlider').addEventListener('input', function(e) {
+            document.getElementById('angleValue').textContent = e.target.value;
+        });
+
+        // Work Calculator
+        function calculateWork() {
+            const force = parseFloat(document.getElementById('workForce').value) || 0;
+            const distance = parseFloat(document.getElementById('workDistance').value) || 0;
+            const angle = parseFloat(document.getElementById('workAngle').value) || 0;
+            
+            const angleRad = angle * Math.PI / 180;
+            const work = force * distance * Math.cos(angleRad);
+            
+            document.getElementById('workValue').textContent = work.toFixed(2);
+            document.getElementById('workResult').style.display = 'block';
+        }
+
+        // Energy Transformation
+        function showEnergyTransform(type) {
+            const info = document.getElementById('energyTransformInfo');
+            const text = document.getElementById('energyTransformText');
+            
+            const transformations = {
+                battery: 'Chemical Energy → Electrical Energy: Chemical reactions in the battery convert stored chemical energy into electrical energy that can power devices.',
+                solar: 'Solar Energy → Electrical Energy: Photovoltaic cells convert sunlight (electromagnetic radiation) directly into electrical energy through the photoelectric effect.',
+                wind: 'Kinetic Energy → Electrical Energy: Moving air (kinetic energy) turns turbine blades, which rotate generators to produce electrical energy.',
+                hydro: 'Potential Energy → Kinetic Energy → Electrical Energy: Water stored at height (potential energy) flows down (kinetic energy) and turns turbines to generate electricity.'
+            };
+            
+            text.textContent = transformations[type];
+            info.style.display = 'block';
+        }
+
+        // Quiz functionality
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentNode.children;
+            for (let option of options) {
+                option.style.pointerEvents = 'none';
+                if (option === element) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.onclick.toString().includes('true')) {
+                    option.classList.add('correct');
+                }
+            }
+            
+            const questionNum = Array.from(document.querySelectorAll('.quiz-container')).indexOf(element.closest('.quiz-container')) + 1;
+            const feedback = document.getElementById('feedback' + questionNum);
+            if (feedback) {
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        // Projectile problem checker
+        function checkProjectileAnswers() {
+            const timeAnswer = parseFloat(document.getElementById('timeAnswer').value);
+            const distanceAnswer = parseFloat(document.getElementById('distanceAnswer').value);
+            
+            // Correct answers: t = sqrt(2h/g) = sqrt(2*45/10) = 3s, d = vt = 20*3 = 60m
+            const correctTime = Math.sqrt(2 * 45 / 10);
+            const correctDistance = 20 * correctTime;
+            
+            const results = document.getElementById('projectileResults');
+            let resultText = '<strong>Results:</strong><br>';
+            
+            if (Math.abs(timeAnswer - correctTime) < 0.1) {
+                resultText += '✅ Time of flight: Correct! (' + correctTime.toFixed(1) + 's)<br>';
+            } else {
+                resultText += '❌ Time of flight: Incorrect. Correct answer: ' + correctTime.toFixed(1) + 's<br>';
+            }
+            
+            if (Math.abs(distanceAnswer - correctDistance) < 1) {
+                resultText += '✅ Horizontal distance: Correct! (' + correctDistance.toFixed(0) + 'm)';
+                results.style.background = '#27ae60';
+            } else {
+                resultText += '❌ Horizontal distance: Incorrect. Correct answer: ' + correctDistance.toFixed(0) + 'm';
+                results.style.background = '#e74c3c';
+            }
+            
+            results.innerHTML = resultText;
+            results.style.display = 'block';
+            results.style.color = 'white';
+            results.style.padding = '1rem';
+            results.style.borderRadius = '8px';
+        }
+
+        // Initialize
+        updateProgress();
+        resetFall();
+        stopForce();
+    </script>
+</body>
+</html>
