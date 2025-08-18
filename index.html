@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Physics Textbook</title>
+    <meta name="description" content="Interactive Physics Textbook - Learn physics through simulations, visualizations, and hands-on experiments">
+    <meta name="keywords" content="physics, education, interactive, simulations, measurements, elasticity, fluids, thermal, waves">
+    <meta property="og:title" content="Interactive Physics Textbook">
+    <meta property="og:description" content="A comprehensive journey through physics with interactive simulations and real-world examples">
     <style>
         * {
             margin: 0;
@@ -126,7 +130,6 @@
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(52, 152, 219, 0.1);
-            cursor: pointer;
         }
 
         .chapter-card:hover {
@@ -217,6 +220,12 @@
             overflow: hidden;
         }
 
+        .chapter-link.coming-soon {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+            cursor: not-allowed;
+        }
+
         .chapter-link::before {
             content: '';
             position: absolute;
@@ -232,10 +241,29 @@
             left: 100%;
         }
 
-        .chapter-link:hover {
+        .chapter-link:hover:not(.coming-soon) {
             background: linear-gradient(45deg, #2980b9, #3498db);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .chapter-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .status-available {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-coming-soon {
+            background: #f39c12;
+            color: white;
         }
 
         .features-section {
@@ -300,9 +328,20 @@
             transition: all 0.3s ease;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
 
-        .progress-dot:hover {
+        .progress-dot.available {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .progress-dot.completed {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .progress-dot:hover:not(.completed) {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             transform: scale(1.1);
@@ -357,18 +396,18 @@
             </div>
 
             <div class="progress-indicator">
-                <div class="progress-dot" title="Chapter 1">Ch 1</div>
-                <div class="progress-dot" title="Chapter 2">Ch 2</div>
-                <div class="progress-dot" title="Chapter 3">Ch 3</div>
-                <div class="progress-dot" title="Chapter 4">Ch 4</div>
-                <div class="progress-dot" title="Chapter 5">Ch 5</div>
+                <div class="progress-dot available" title="Chapter 1: Physics and Measurements" onclick="goToChapter(1)">Ch 1</div>
+                <div class="progress-dot available" title="Chapter 2: Solids and Elasticity" onclick="goToChapter(2)">Ch 2</div>
+                <div class="progress-dot" title="Chapter 3: Fluids (Coming Soon)" onclick="goToChapter(3)">Ch 3</div>
+                <div class="progress-dot" title="Chapter 4: Thermal Physics (Coming Soon)" onclick="goToChapter(4)">Ch 4</div>
+                <div class="progress-dot" title="Chapter 5: Waves and Sound (Coming Soon)" onclick="goToChapter(5)">Ch 5</div>
             </div>
 
             <div class="chapters-grid">
                 <!-- Chapter 1 -->
                 <div class="chapter-card">
                     <span class="chapter-icon">📏</span>
-                    <h3>Chapter 1: Physics and Measurements</h3>
+                    <h3>Chapter 1: Physics and Measurements <span class="chapter-status status-available">Available</span></h3>
                     <p>
                         Begin your physics journey by understanding the fundamental role of measurements in science. 
                         Learn about SI units, dimensional analysis, and the distinction between scalars and vectors.
@@ -381,14 +420,14 @@
                         <li>Interactive Simulations & Practice Problems</li>
                     </ul>
                     <center>
-                        <a href="#chapter1" class="chapter-link" onclick="loadChapter(1)">Explore Chapter 1 →</a>
+                        <a href="chapter1.html" class="chapter-link">Explore Chapter 1 →</a>
                     </center>
                 </div>
 
                 <!-- Chapter 2 -->
                 <div class="chapter-card">
                     <span class="chapter-icon">🏗️</span>
-                    <h3>Chapter 2: Solids and Elasticity</h3>
+                    <h3>Chapter 2: Solids and Elasticity <span class="chapter-status status-available">Available</span></h3>
                     <p>
                         Discover the mechanical properties of solids, from stress and strain to elastic deformation. 
                         Understand how materials respond to forces and the limits of their elasticity.
@@ -401,14 +440,14 @@
                         <li>Interactive Stress-Strain Simulations</li>
                     </ul>
                     <center>
-                        <a href="#chapter2" class="chapter-link" onclick="loadChapter(2)">Explore Chapter 2 →</a>
+                        <a href="chapter2.html" class="chapter-link">Explore Chapter 2 →</a>
                     </center>
                 </div>
 
                 <!-- Chapter 3 -->
                 <div class="chapter-card">
                     <span class="chapter-icon">🌊</span>
-                    <h3>Chapter 3: Fluids</h3>
+                    <h3>Chapter 3: Fluids <span class="chapter-status status-coming-soon">Coming Soon</span></h3>
                     <p>
                         Dive into the world of fluid mechanics! Explore pressure, buoyancy, and fluid flow. 
                         From Pascal's principle to Bernoulli's equation, master the behavior of liquids and gases.
@@ -421,14 +460,14 @@
                         <li>Viscosity & Real Fluid Behavior</li>
                     </ul>
                     <center>
-                        <a href="#chapter3" class="chapter-link" onclick="loadChapter(3)">Explore Chapter 3 →</a>
+                        <a href="#" class="chapter-link coming-soon" onclick="return false;">Coming Soon</a>
                     </center>
                 </div>
 
                 <!-- Chapter 4 -->
                 <div class="chapter-card">
                     <span class="chapter-icon">🌡️</span>
-                    <h3>Chapter 4: Thermal Physics</h3>
+                    <h3>Chapter 4: Thermal Physics <span class="chapter-status status-coming-soon">Coming Soon</span></h3>
                     <p>
                         Explore the fascinating world of heat and temperature! Understand thermal expansion, 
                         heat transfer, and the kinetic theory of gases in this comprehensive thermal physics chapter.
@@ -441,14 +480,14 @@
                         <li>Thermal Equilibrium & Heat Engines</li>
                     </ul>
                     <center>
-                        <a href="#chapter4" class="chapter-link" onclick="loadChapter(4)">Explore Chapter 4 →</a>
+                        <a href="#" class="chapter-link coming-soon" onclick="return false;">Coming Soon</a>
                     </center>
                 </div>
 
                 <!-- Chapter 5 -->
                 <div class="chapter-card">
                     <span class="chapter-icon">🎵</span>
-                    <h3>Chapter 5: Waves and Sound</h3>
+                    <h3>Chapter 5: Waves and Sound <span class="chapter-status status-coming-soon">Coming Soon</span></h3>
                     <p>
                         Experience the world of waves and sound! From simple harmonic motion to complex wave phenomena, 
                         discover how energy travels through different media and creates the sounds we hear.
@@ -461,7 +500,7 @@
                         <li>Doppler Effect & Wave Applications</li>
                     </ul>
                     <center>
-                        <a href="#chapter5" class="chapter-link" onclick="loadChapter(5)">Explore Chapter 5 →</a>
+                        <a href="#" class="chapter-link coming-soon" onclick="return false;">Coming Soon</a>
                     </center>
                 </div>
             </div>
@@ -504,45 +543,66 @@
     </div>
 
     <script>
-        // Animation for progress dots
-        const progressDots = document.querySelectorAll('.progress-dot');
-        progressDots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                loadChapter(index + 1);
-            });
-        });
+        // Chapter availability configuration
+        const chapterConfig = {
+            1: { available: true, file: 'chapter1.html' },
+            2: { available: true, file: 'chapter2.html' },
+            3: { available: false, file: 'chapter3.html' },
+            4: { available: false, file: 'chapter4.html' },
+            5: { available: false, file: 'chapter5.html' }
+        };
 
-        // Chapter cards hover effects
-        const chapterCards = document.querySelectorAll('.chapter-card');
-        chapterCards.forEach((card, index) => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Function to load chapters (placeholder for now)
-        function loadChapter(chapterNum) {
-            // In a real implementation, this would navigate to the chapter page
-            console.log(`Loading Chapter ${chapterNum}`);
-            
-            // For demonstration, we'll show an alert
-            const chapterTitles = [
-                "Physics and Measurements",
-                "Solids and Elasticity", 
-                "Fluids",
-                "Thermal Physics",
-                "Waves and Sound"
-            ];
-            
-            alert(`🚀 Chapter ${chapterNum}: ${chapterTitles[chapterNum - 1]} will be loaded!\n\nThis is where the chapter-specific page would open with all the interactive content, simulations, and learning materials.`);
+        // Function to navigate to chapters
+        function goToChapter(chapterNum) {
+            const config = chapterConfig[chapterNum];
+            if (config && config.available) {
+                // Track chapter access
+                trackChapterAccess(chapterNum);
+                window.location.href = config.file;
+            } else {
+                showComingSoonMessage(chapterNum);
+            }
         }
 
-        // Add loading animation
-        window.addEventListener('load', () => {
+        // Show coming soon message
+        function showComingSoonMessage(chapterNum) {
+            const chapterTitles = {
+                3: "Fluids",
+                4: "Thermal Physics", 
+                5: "Waves and Sound"
+            };
+            
+            alert(`📚 Chapter ${chapterNum}: ${chapterTitles[chapterNum]} is coming soon!\n\nStay tuned for more interactive physics content.`);
+        }
+
+        // Track chapter access in localStorage
+        function trackChapterAccess(chapterNum) {
+            let accessHistory = JSON.parse(localStorage.getItem('physicsChapterAccess') || '[]');
+            if (!accessHistory.includes(chapterNum)) {
+                accessHistory.push(chapterNum);
+                localStorage.setItem('physicsChapterAccess', JSON.stringify(accessHistory));
+            }
+            
+            // Update last accessed
+            localStorage.setItem('lastAccessedChapter', chapterNum.toString());
+        }
+
+        // Update progress indicators based on access history
+        function updateProgressIndicators() {
+            const accessHistory = JSON.parse(localStorage.getItem('physicsChapterAccess') || '[]');
+            const progressDots = document.querySelectorAll('.progress-dot');
+            
+            progressDots.forEach((dot, index) => {
+                const chapterNum = index + 1;
+                if (accessHistory.includes(chapterNum)) {
+                    dot.classList.add('completed');
+                    dot.innerHTML = '✓';
+                }
+            });
+        }
+
+        // Animation for chapter cards on load
+        function animateChapterCards() {
             const cards = document.querySelectorAll('.chapter-card');
             cards.forEach((card, index) => {
                 setTimeout(() => {
@@ -556,14 +616,49 @@
                     });
                 }, index * 100);
             });
-        });
+        }
 
         // Add parallax effect to header
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const header = document.querySelector('.header');
-            const rate = scrolled * -0.5;
-            header.style.transform = `translateY(${rate}px)`;
+        function addParallaxEffect() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const header = document.querySelector('.header');
+                const rate = scrolled * -0.5;
+                header.style.transform = `translateY(${rate}px)`;
+            });
+        }
+
+        // Show welcome message for first-time visitors
+        function checkFirstVisit() {
+            const hasVisited = localStorage.getItem('hasVisitedPhysicsTextbook');
+            if (!hasVisited) {
+                setTimeout(() => {
+                    alert(`🎉 Welcome to Interactive Physics!\n\nThis textbook features:\n• Interactive simulations\n• Real-time calculations\n• Visual animations\n• Self-assessment quizzes\n\nStart with Chapter 1 to begin your physics journey!`);
+                    localStorage.setItem('hasVisitedPhysicsTextbook', 'true');
+                }, 1500);
+            }
+        }
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            updateProgressIndicators();
+            animateChapterCards();
+            addParallaxEffect();
+            checkFirstVisit();
+        });
+
+        // Add hover effects to chapter cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const chapterCards = document.querySelectorAll('.chapter-card');
+            chapterCards.forEach((card, index) => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
         });
     </script>
 </body>
