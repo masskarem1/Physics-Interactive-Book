@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 1: Physics and Measurements | Interactive Physics</title>
+    <meta name="description" content="Learn physics measurements, SI units, scalars vs vectors, and dimensional analysis through interactive simulations">
+    <meta name="keywords" content="physics, measurements, SI units, scalars, vectors, dimensional analysis">
+    <meta property="og:title" content="Interactive Physics - Chapter 1: Physics and Measurements">
+    <meta property="og:description" content="Master the fundamentals of physics measurements through interactive learning">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .breadcrumb {
+            background: #34495e;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+        .breadcrumb a {
+            color: #74b9ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: white;
+        }
+
+        .navigation {
+            background: #34495e;
+            padding: 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 5px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .nav-btn.active {
+            background: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .chapter-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .content {
+            padding: 2rem;
+            min-height: 400px;
+        }
+
+        .topic {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .topic.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .topic h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .topic h3 {
+            color: #34495e;
+            font-size: 1.4rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .learning-objectives {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .interactive-element {
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .simulation-container {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .simulation-canvas {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .quiz-container {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            background: rgba(255,255,255,0.2);
+            margin: 0.5rem 0;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-options li:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(5px);
+        }
+
+        .quiz-options li.correct {
+            background: #27ae60 !important;
+            color: white;
+        }
+
+        .quiz-options li.incorrect {
+            background: #e74c3c !important;
+            color: white;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #00b894, #00cec9);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 5px solid #e17055;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0.5rem 0;
+            font-family: 'Times New Roman', serif;
+            background: rgba(255,255,255,0.7);
+            padding: 0.5rem;
+            border-radius: 5px;
+        }
+
+        .unit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .unit-table th {
+            background: #3498db;
+            color: white;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .unit-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .unit-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .vector-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 8px;
+        }
+
+        .scalar-box, .vector-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .vector-box {
+            position: relative;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            right: -15px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #e74c3c;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .prefix-converter {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: center;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 8px;
+        }
+
+        .converter-input {
+            padding: 0.8rem;
+            border: 2px solid #27ae60;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .dimensional-checker {
+            background: rgba(230, 126, 34, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .equation-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e67e22;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn.success {
+            background: #27ae60;
+        }
+
+        .btn.success:hover {
+            background: #229954;
+        }
+
+        .btn.danger {
+            background: #e74c3c;
+        }
+
+        .btn.danger:hover {
+            background: #c0392b;
+        }
+
+        .slider-container {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            margin: 0.5rem 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+        }
+
+        .result-display {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+
+            .vector-demo {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📏 Chapter 1: Physics and Measurements</h1>
+            <p>The Foundation of Quantitative Science</p>
+        </header>
+
+        <nav class="breadcrumb">
+            <a href="index.html">🏠 Home</a> > <span>Chapter 1: Physics and Measurements</span>
+        </nav>
+
+        <div class="navigation">
+            <div>
+                <button class="nav-btn active" onclick="showTopic(1)">Topic 1.1: Introduction & SI Units</button>
+                <button class="nav-btn" onclick="showTopic(2)">Topic 1.2: Scalars & Vectors</button>
+                <button class="nav-btn" onclick="showTopic(3)">Topic 1.3: Dimensional Analysis</button>
+                <button class="nav-btn" onclick="showTopic(4)">Topic 1.4: Assessment & Practice</button>
+            </div>
+            <div class="chapter-nav">
+                <button class="nav-btn" onclick="previousChapter()" style="background: #95a5a6;">← Home</button>
+                <button class="nav-btn" onclick="nextChapter()" style="background: #27ae60;">Chapter 2 →</button>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <main class="content">
+            <!-- Topic 1.1: Introduction & SI Units -->
+            <div class="topic active" id="topic1">
+                <h2>🔬 Topic 1.1: Introduction & SI Units</h2>
+                
+                <div class="learning-objectives">
+                    <h3>📚 Learning Objectives</h3>
+                    <ul>
+                        <li>Understand the role of physics in explaining natural phenomena</li>
+                        <li>Learn about measurement systems and SI units</li>
+                        <li>Use scientific prefixes for powers of ten</li>
+                        <li>Apply precise measurement concepts</li>
+                    </ul>
+                </div>
+
+                <p>Physics is a <strong>quantitative science</strong> that seeks to understand and describe natural phenomena through precise measurements and mathematical relationships.</p>
+
+                <h3>🌍 Why Measurements Matter</h3>
+                <div class="interactive-element">
+                    <h4>Real-World Example: Baby Elephant Measurements</h4>
+                    <p>Let's measure a baby elephant's vital statistics:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: rgba(52, 152, 219, 0.1); border-radius: 8px;">
+                            <h4>Mass</h4>
+                            <div style="font-size: 2rem; color: #3498db;">120 kg</div>
+                            <p>Fundamental SI Unit</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(231, 76, 60, 0.1); border-radius: 8px;">
+                            <h4>Height</h4>
+                            <div style="font-size: 2rem; color: #e74c3c;">0.9 m</div>
+                            <p>Length measurement</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: rgba(39, 174, 96, 0.1); border-radius: 8px;">
+                            <h4>Age</h4>
+                            <div style="font-size: 2rem; color: #27ae60;">6 months</div>
+                            <p>Time-based measurement</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>📐 SI Fundamental Units</h3>
+                <table class="unit-table">
+                    <thead>
+                        <tr>
+                            <th>Physical Quantity</th>
+                            <th>SI Unit</th>
+                            <th>Symbol</th>
+                            <th>Definition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Length</td>
+                            <td>meter</td>
+                            <td>m</td>
+                            <td>Distance light travels in 1/299,792,458 seconds</td>
+                        </tr>
+                        <tr>
+                            <td>Mass</td>
+                            <td>kilogram</td>
+                            <td>kg</td>
+                            <td>Defined by Planck constant</td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td>second</td>
+                            <td>s</td>
+                            <td>9,192,631,770 cesium-133 transitions</td>
+                        </tr>
+                        <tr>
+                            <td>Electric Current</td>
+                            <td>ampere</td>
+                            <td>A</td>
+                            <td>Defined by elementary charge</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td>kelvin</td>
+                            <td>K</td>
+                            <td>Defined by Boltzmann constant</td>
+                        </tr>
+                        <tr>
+                            <td>Amount of Substance</td>
+                            <td>mole</td>
+                            <td>mol</td>
+                            <td>Avogadro constant (6.02×10²³)</td>
+                        </tr>
+                        <tr>
+                            <td>Luminous Intensity</td>
+                            <td>candela</td>
+                            <td>cd</td>
+                            <td>Luminous efficacy of monochromatic radiation</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="simulation-container">
+                    <h3>🕰️ Interactive: Cesium Atomic Clock</h3>
+                    <p>The second is defined by cesium-133 atom transitions. Watch the counter!</p>
+                    <canvas id="atomicClock" class="simulation-canvas" width="400" height="200"></canvas>
+                    <div class="result-display">
+                        <div>Transitions counted: <span id="transitionCount">0</span></div>
+                        <div>Time elapsed: <span id="timeElapsed">0.000</span> seconds</div>
+                    </div>
+                    <button class="btn success" onclick="startAtomicClock()">Start Clock</button>
+                    <button class="btn danger" onclick="stopAtomicClock()">Stop Clock</button>
+                </div>
+
+                <h3>🔢 Scientific Prefixes</h3>
+                <div class="interactive-element">
+                    <h4>Unit Converter</h4>
+                    <p>Convert between different metric prefixes:</p>
+                    <div class="prefix-converter">
+                        <div>
+                            <input type="number" id="inputValue" class="converter-input" placeholder="Enter value" value="1000">
+                            <select id="inputUnit" class="converter-input">
+                                <option value="1">m (meter)</option>
+                                <option value="0.001" selected>mm (millimeter)</option>
+                                <option value="0.01">cm (centimeter)</option>
+                                <option value="1000">km (kilometer)</option>
+                                <option value="1000000">Mm (megameter)</option>
+                            </select>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">=</div>
+                        <div>
+                            <input type="text" id="outputValue" class="converter-input" readonly>
+                            <select id="outputUnit" class="converter-input">
+                                <option value="1" selected>m (meter)</option>
+                                <option value="0.001">mm (millimeter)</option>
+                                <option value="0.01">cm (centimeter)</option>
+                                <option value="1000">km (kilometer)</option>
+                                <option value="1000000">Mm (megameter)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn" onclick="convertUnits()">Convert</button>
+                </div>
+
+                <div class="formula-box">
+                    <h3>🧮 Common Prefixes</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem; text-align: left;">
+                        <div class="formula">pico (p) = 10⁻¹²</div>
+                        <div class="formula">nano (n) = 10⁻⁹</div>
+                        <div class="formula">micro (μ) = 10⁻⁶</div>
+                        <div class="formula">milli (m) = 10⁻³</div>
+                        <div class="formula">kilo (k) = 10³</div>
+                        <div class="formula">mega (M) = 10⁶</div>
+                        <div class="formula">giga (G) = 10⁹</div>
+                        <div class="formula">tera (T) = 10¹²</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 1.2: Scalars & Vectors -->
+            <div class="topic" id="topic2">
+                <h2>↗️ Topic 1.2: Scalars & Vectors</h2>
+                
+                <p>Physical quantities can be classified into two fundamental types based on the information they provide.</p>
+
+                <h3>📊 Understanding the Difference</h3>
+                <div class="vector-demo">
+                    <div class="scalar-box">
+                        <h4>📏 Scalar</h4>
+                        <p><strong>Magnitude Only</strong></p>
+                        <div style="font-size: 1.5rem; color: #3498db; margin: 0.5rem 0;">25 km/h</div>
+                        <p>Speed</p>
+                    </div>
+                    <div style="font-size: 2rem; color: #e67e22;">VS</div>
+                    <div class="vector-box">
+                        <h4>🧭 Vector</h4>
+                        <p><strong>Magnitude + Direction</strong></p>
+                        <div style="font-size: 1.5rem; color: #e74c3c; margin: 0.5rem 0;">25 km/h North</div>
+                        <p>Velocity</p>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>🎯 Interactive: Scalar vs Vector Examples</h3>
+                    <p>Click on each quantity to see if it's a scalar or vector:</p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                        <button class="btn" onclick="revealQuantity('mass', 'scalar')">Mass</button>
+                        <button class="btn" onclick="revealQuantity('displacement', 'vector')">Displacement</button>
+                        <button class="btn" onclick="revealQuantity('temperature', 'scalar')">Temperature</button>
+                        <button class="btn" onclick="revealQuantity('force', 'vector')">Force</button>
+                        <button class="btn" onclick="revealQuantity('energy', 'scalar')">Energy</button>
+                        <button class="btn" onclick="revealQuantity('acceleration', 'vector')">Acceleration</button>
+                        <button class="btn" onclick="revealQuantity('distance', 'scalar')">Distance</button>
+                        <button class="btn" onclick="revealQuantity('velocity', 'vector')">Velocity</button>
+                    </div>
+                    <div id="quantityResult" class="result-display hidden">
+                        <h4 id="quantityName"></h4>
+                        <p id="quantityType"></p>
+                        <p id="quantityExplanation"></p>
+                    </div>
+                </div>
+
+                <div class="simulation-container">
+                    <h3>🚶‍♂️ Distance vs Displacement Simulation</h3>
+                    <p>Watch how distance and displacement differ for the same path!</p>
+                    <canvas id="pathSimulation" class="simulation-canvas" width="400" height="300"></canvas>
+                    <div class="result-display">
+                        <div>Distance traveled: <span id="distanceValue">0</span> m</div>
+                        <div>Displacement magnitude: <span id="displacementValue">0</span> m</div>
+                        <div>Displacement direction: <span id="displacementDirection">-</span></div>
+                    </div>
+                    <button class="btn success" onclick="startPathAnimation()">Start Journey</button>
+                    <button class="btn danger" onclick="resetPath()">Reset</button>
+                </div>
+
+                <h3>📋 Scalar and Vector Quantities</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div class="interactive-element">
+                        <h4>📊 Scalar Quantities</h4>
+                        <ul>
+                            <li><strong>Mass:</strong> 5 kg</li>
+                            <li><strong>Temperature:</strong> 25°C</li>
+                            <li><strong>Speed:</strong> 60 km/h</li>
+                            <li><strong>Distance:</strong> 100 m</li>
+                            <li><strong>Energy:</strong> 500 J</li>
+                            <li><strong>Power:</strong> 100 W</li>
+                            <li><strong>Time:</strong> 10 s</li>
+                        </ul>
+                    </div>
+                    <div class="interactive-element">
+                        <h4>🧭 Vector Quantities</h4>
+                        <ul>
+                            <li><strong>Velocity:</strong> 60 km/h East</li>
+                            <li><strong>Displacement:</strong> 100 m North</li>
+                            <li><strong>Force:</strong> 50 N upward</li>
+                            <li><strong>Acceleration:</strong> 9.8 m/s² down</li>
+                            <li><strong>Momentum:</strong> 200 kg⋅m/s forward</li>
+                            <li><strong>Electric Field:</strong> 100 N/C right</li>
+                            <li><strong>Magnetic Field:</strong> 0.5 T into page</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic 1.3: Dimensional Analysis -->
+            <div class="topic" id="topic3">
+                <h2>🔍 Topic 1.3: Dimensional Analysis</h2>
+                
+                <p>Dimensional analysis is a powerful tool for checking equations, deriving relationships, and understanding physical laws.</p>
+
+                <h3>🧮 Fundamental Dimensions</h3>
+                <div class="formula-box">
+                    <div class="formula">[Length] = L</div>
+                    <div class="formula">[Mass] = M</div>
+                    <div class="formula">[Time] = T</div>
+                    <div class="formula">[Current] = I</div>
+                    <div class="formula">[Temperature] = Θ</div>
+                </div>
+
+                <div class="interactive-element">
+                    <h3>🔧 Equation Dimension Checker</h3>
+                    <p>Enter a physics equation and check if it's dimensionally correct:</p>
+                    <div class="dimensional-checker">
+                        <label>Select an equation to check:</label>
+                        <select id="equationSelect" class="equation-input">
+                            <option value="v=u+at">v = u + at (Kinematic equation)</option>
+                            <option value="s=ut+0.5at²">s = ut + ½at² (Position equation)</option>
+                            <option value="E=mc²">E = mc² (Einstein's equation)</option>
+                            <option value="F=ma">F = ma (Newton's second law)</option>
+                            <option value="KE=0.5mv²">KE = ½mv² (Kinetic energy)</option>
+                            <option value="P=Fv">P = Fv (Power equation)</option>
+                        </select>
+                        <button class="btn success" onclick="checkDimensions()">Check Dimensions</button>
+                        <div id="dimensionResult" class="result-display hidden">
+                            <h4>Dimensional Analysis:</h4>
+                            <div id="leftSideDimension"></div>
+                            <div id="rightSideDimension"></div>
+                            <div id="dimensionConclusion"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🎯 Deriving Physical Relations</h3>
+                <div class="simulation-container">
+                    <h3>🔄 Interactive Derivation: Simple Pendulum</h3>
+                    <p>Derive the period of a simple pendulum using dimensional analysis!</p>
+                    <div style="text-align: left; margin: 1rem 0;">
+                        <p><strong>Given factors:</strong></p>
+                        <ul>
+                            <li>Length of pendulum (L): [L]</li>
+                            <li>Acceleration due to gravity (g): [LT⁻²]</li>
+                            <li>Mass of bob (m): [M]</li>
+                        </ul>
+                        <p><strong>Find:</strong> Period T with dimensions [T]</p>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                        <p>Let T = L<sup>a</sup> × g<sup>b</sup> × m<sup>c</sup></p>
+                        <p>Substituting dimensions: [T] = [L]<sup>a</sup> × [LT⁻²]<sup>b</sup> × [M]<sup>c</sup></p>
+                        <button class="btn" onclick="showDerivationStep(1)">Show Step 1</button>
+                        <button class="btn" onclick="showDerivationStep(2)">Show Step 2</button>
+                        <button class="btn" onclick="showDerivationStep(3)">Final Result</button>
+                    </div>
+                    
+                    <div id="derivationSteps" class="result-display hidden">
+                        <div id="stepContent"></div>
+                    </div>
+
+                    <canvas id="pendulumDemo" class="simulation-canvas" width="300" height="250"></canvas>
+                    <div class="slider-container">
+                        <label>Pendulum Length: <span id="pendulumLength">1.0</span> m</label>
+                        <input type="range" id="lengthSlider" class="slider" min="0.5" max="3.0" step="0.1" value="1.0">
+                        <br>
+                        <label>Calculated Period: <span id="calculatedPeriod">2.0</span> s</label>
+                    </div>
+                    <button class="btn success" onclick="startPendulumDemo()">Start Pendulum</button>
+                    <button class="btn danger" onclick="stopPendulumDemo()">Stop</button>
+                </div>
+            </div>
+
+            <!-- Topic 1.4: Assessment & Practice -->
+            <div class="topic" id="topic4">
+                <h2>✅ Topic 1.4: Assessment & Practice</h2>
+                
+                <p>Test your understanding of physics measurements, units, and dimensional analysis!</p>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        Question 1: Which of the following is a vector quantity?
+                    </div>
+                    <ul class="quiz-options">
+                        <li onclick="checkAnswer(this, false)">A) Temperature</li>
+                        <li onclick="checkAnswer(this, false)">B) Mass</li>
+                        <li onclick="checkAnswer(this, true)">C) Velocity</li>
+                        <li onclick="checkAnswer(this, false)">D) Energy</li>
+                    </ul>
+                    <div id="feedback1" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Correct! Velocity has both magnitude and direction (e.g., 50 km/h North), making it a vector quantity.
+                    </div>
+                </div>
+
+                <div class="quiz-container">
+                    <div class="quiz-question">
+                        Question 2: What are the dimensions of force in terms of fundamental quantities?
+                    </div>
+                    <ul class="quiz-options">
+                        <li onclick="checkAnswer(this, false)">A) [MLT⁻¹]</li>
+                        <li onclick="checkAnswer(this, true)">B) [MLT⁻²]</li>
+                        <li onclick="checkAnswer(this, false)">C) [ML²T⁻²]</li>
+                        <li onclick="checkAnswer(this, false)">D) [ML⁻¹T⁻²]</li>
+                    </ul>
+                    <div id="feedback2" class="hidden" style="margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.2); border-radius: 8px;">
+                        Correct! From F = ma, dimensions are [M][LT⁻²] = [MLT⁻²]
+                    </div>
+                </div>
+
+                <div class="learning-objectives" style="background: linear-gradient(135deg, #00b894, #00cec9);">
+                    <h3>🎉 Chapter Summary</h3>
+                    <p>Congratulations! You have mastered:</p>
+                    <ul>
+                        <li>✅ The role of physics as a quantitative science</li>
+                        <li>✅ SI fundamental units and their definitions</li>
+                        <li>✅ Scientific prefixes and unit conversions</li>
+                        <li>✅ The distinction between scalars and vectors</li>
+                        <li>✅ Dimensional analysis for checking equations</li>
+                        <li>✅ Deriving physical relationships using dimensions</li>
+                    </ul>
+                    <p><strong>You're ready to tackle Chapter 2: Solids and Elasticity!</strong></p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Interactive Physics: Chapter 1 - Physics and Measurements</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentTopic = 1;
+        let animationRunning = false;
+
+        // Topic navigation
+        function showTopic(topicNum) {
+            const topics = document.querySelectorAll('.topic');
+            topics.forEach(topic => topic.classList.remove('active'));
+            
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById('topic' + topicNum).classList.add('active');
+            navBtns[topicNum - 1].classList.add('active');
+            
+            currentTopic = topicNum;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const progress = (currentTopic / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Navigation functions with proper GitHub Pages linking
+        function previousChapter() {
+            window.location.href = 'index.html';
+        }
+
+        function nextChapter() {
+            window.location.href = 'chapter2.html';
+        }
+
+        // Atomic Clock Simulation
+        let clockAnimation = null;
+        let transitionCount = 0;
+        let startTime = null;
+
+        function startAtomicClock() {
+            if (clockAnimation) return;
+            
+            const canvas = document.getElementById('atomicClock');
+            const ctx = canvas.getContext('2d');
+            transitionCount = 0;
+            startTime = Date.now();
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const elapsed = (Date.now() - startTime) / 1000;
+                transitionCount = Math.floor(elapsed * 9192631770);
+                
+                // Draw cesium atom representation
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                // Nucleus
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Electron shells with oscillating color
+                const intensity = Math.sin(elapsed * 20) * 0.5 + 0.5;
+                ctx.strokeStyle = `rgba(52, 152, 219, ${intensity})`;
+                ctx.lineWidth = 3;
+                
+                for (let i = 1; i <= 3; i++) {
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 20 + i * 25, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+                
+                // Update display
+                document.getElementById('transitionCount').textContent = transitionCount.toLocaleString();
+                document.getElementById('timeElapsed').textContent = elapsed.toFixed(3);
+                
+                clockAnimation = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function stopAtomicClock() {
+            if (clockAnimation) {
+                cancelAnimationFrame(clockAnimation);
+                clockAnimation = null;
+            }
+        }
+
+        // Unit Converter
+        function convertUnits() {
+            const inputValue = parseFloat(document.getElementById('inputValue').value) || 0;
+            const inputUnit = parseFloat(document.getElementById('inputUnit').value);
+            const outputUnit = parseFloat(document.getElementById('outputUnit').value);
+            
+            const baseValue = inputValue * inputUnit;
+            const result = baseValue / outputUnit;
+            
+            document.getElementById('outputValue').value = result.toExponential(3);
+        }
+
+        // Update conversion on input change
+        document.getElementById('inputValue').addEventListener('input', convertUnits);
+        document.getElementById('inputUnit').addEventListener('change', convertUnits);
+        document.getElementById('outputUnit').addEventListener('change', convertUnits);
+
+        // Scalar vs Vector reveal
+        function revealQuantity(name, type) {
+            const result = document.getElementById('quantityResult');
+            const nameElement = document.getElementById('quantityName');
+            const typeElement = document.getElementById('quantityType');
+            const explanationElement = document.getElementById('quantityExplanation');
+            
+            const explanations = {
+                mass: { type: 'Scalar', explanation: 'Mass only has magnitude (e.g., 5 kg). No direction is needed.' },
+                displacement: { type: 'Vector', explanation: 'Displacement has magnitude and direction (e.g., 10 m North).' },
+                temperature: { type: 'Scalar', explanation: 'Temperature only has magnitude (e.g., 25°C). No direction.' },
+                force: { type: 'Vector', explanation: 'Force has magnitude and direction (e.g., 100 N upward).' },
+                energy: { type: 'Scalar', explanation: 'Energy only has magnitude (e.g., 500 J). No direction.' },
+                acceleration: { type: 'Vector', explanation: 'Acceleration has magnitude and direction (e.g., 9.8 m/s² downward).' },
+                distance: { type: 'Scalar', explanation: 'Distance is the total path length, only magnitude matters.' },
+                velocity: { type: 'Vector', explanation: 'Velocity has magnitude and direction (e.g., 50 km/h East).' }
+            };
+            
+            nameElement.textContent = name.charAt(0).toUpperCase() + name.slice(1);
+            typeElement.textContent = `Type: ${explanations[name].type}`;
+            typeElement.style.color = explanations[name].type === 'Vector' ? '#e74c3c' : '#3498db';
+            explanationElement.textContent = explanations[name].explanation;
+            
+            result.classList.remove('hidden');
+        }
+
+        // Distance vs Displacement Animation
+        let pathAnimation = null;
+
+        function startPathAnimation() {
+            const canvas = document.getElementById('pathSimulation');
+            const ctx = canvas.getContext('2d');
+            
+            if (pathAnimation) cancelAnimationFrame(pathAnimation);
+            
+            const path = [
+                {x: 50, y: 150}, {x: 150, y: 150}, {x: 150, y: 100},
+                {x: 250, y: 100}, {x: 250, y: 200}, {x: 350, y: 200}
+            ];
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw path
+                ctx.strokeStyle = '#95a5a6';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                for (let i = 0; i < path.length - 1; i++) {
+                    ctx.moveTo(path[i].x, path[i].y);
+                    ctx.lineTo(path[i + 1].x, path[i + 1].y);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Draw start and end points
+                ctx.fillStyle = '#27ae60';
+                ctx.beginPath();
+                ctx.arc(path[0].x, path[0].y, 8, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(path[path.length - 1].x, path[path.length - 1].y, 8, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw displacement vector
+                ctx.strokeStyle = '#e74c3c';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(path[0].x, path[0].y);
+                ctx.lineTo(path[path.length - 1].x, path[path.length - 1].y);
+                ctx.stroke();
+                
+                // Arrow for displacement
+                const dx = path[path.length - 1].x - path[0].x;
+                const dy = path[path.length - 1].y - path[0].y;
+                const angle = Math.atan2(dy, dx);
+                
+                ctx.save();
+                ctx.translate(path[path.length - 1].x, path[path.length - 1].y);
+                ctx.rotate(angle);
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(-15, -8);
+                ctx.lineTo(-15, 8);
+                ctx.fill();
+                ctx.restore();
+                
+                // Calculate values
+                let pathDistance = 0;
+                for (let i = 0; i < path.length - 1; i++) {
+                    const segmentDx = path[i + 1].x - path[i].x;
+                    const segmentDy = path[i + 1].y - path[i].y;
+                    pathDistance += Math.sqrt(segmentDx * segmentDx + segmentDy * segmentDy);
+                }
+                
+                const displacement = Math.sqrt(dx * dx + dy * dy);
+                const displacementAngle = Math.atan2(-dy, dx) * 180 / Math.PI;
+                
+                // Update display
+                document.getElementById('distanceValue').textContent = (pathDistance * 0.5).toFixed(1);
+                document.getElementById('displacementValue').textContent = (displacement * 0.5).toFixed(1);
+                document.getElementById('displacementDirection').textContent = displacementAngle.toFixed(1) + '°';
+            }
+            
+            animate();
+        }
+
+        function resetPath() {
+            const canvas = document.getElementById('pathSimulation');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            document.getElementById('distanceValue').textContent = '0';
+            document.getElementById('displacementValue').textContent = '0';
+            document.getElementById('displacementDirection').textContent = '-';
+        }
+
+        // Dimensional Analysis Checker
+        function checkDimensions() {
+            const equation = document.getElementById('equationSelect').value;
+            const result = document.getElementById('dimensionResult');
+            const leftSide = document.getElementById('leftSideDimension');
+            const rightSide = document.getElementById('rightSideDimension');
+            const conclusion = document.getElementById('dimensionConclusion');
+            
+            const analyses = {
+                'v=u+at': {
+                    left: '[v] = [LT⁻¹]',
+                    right: '[u] + [a][t] = [LT⁻¹] + [LT⁻²][T] = [LT⁻¹]',
+                    correct: true
+                },
+                's=ut+0.5at²': {
+                    left: '[s] = [L]',
+                    right: '[u][t] + [a][t²] = [LT⁻¹][T] + [LT⁻²][T²] = [L] + [L] = [L]',
+                    correct: true
+                },
+                'E=mc²': {
+                    left: '[E] = [ML²T⁻²]',
+                    right: '[m][c²] = [M][LT⁻¹]² = [M][L²T⁻²] = [ML²T⁻²]',
+                    correct: true
+                },
+                'F=ma': {
+                    left: '[F] = [MLT⁻²]',
+                    right: '[m][a] = [M][LT⁻²] = [MLT⁻²]',
+                    correct: true
+                },
+                'KE=0.5mv²': {
+                    left: '[KE] = [ML²T⁻²]',
+                    right: '[m][v²] = [M][LT⁻¹]² = [M][L²T⁻²] = [ML²T⁻²]',
+                    correct: true
+                },
+                'P=Fv': {
+                    left: '[P] = [ML²T⁻³]',
+                    right: '[F][v] = [MLT⁻²][LT⁻¹] = [ML²T⁻³]',
+                    correct: true
+                }
+            };
+            
+            const analysis = analyses[equation];
+            leftSide.innerHTML = `<strong>Left side:</strong> ${analysis.left}`;
+            rightSide.innerHTML = `<strong>Right side:</strong> ${analysis.right}`;
+            conclusion.innerHTML = `<strong>Conclusion:</strong> ${analysis.correct ? '✅ Dimensionally correct!' : '❌ Dimensionally incorrect!'}`;
+            conclusion.style.color = analysis.correct ? '#27ae60' : '#e74c3c';
+            
+            result.classList.remove('hidden');
+        }
+
+        // Pendulum derivation steps
+        function showDerivationStep(step) {
+            const stepsDiv = document.getElementById('derivationSteps');
+            const content = document.getElementById('stepContent');
+            
+            const steps = {
+                1: `<strong>Step 1: Equating dimensions</strong><br>
+                     [T] = [L]<sup>a</sup> × [LT⁻²]<sup>b</sup> × [M]<sup>c</sup><br>
+                     [T] = [L<sup>a+b</sup>T<sup>-2b</sup>M<sup>c</sup>]`,
+                2: `<strong>Step 2: Comparing powers</strong><br>
+                     For [T]: 1 = -2b → b = -1/2<br>
+                     For [L]: 0 = a + b → a = -b = 1/2<br>
+                     For [M]: 0 = c → c = 0`,
+                3: `<strong>Final Result:</strong><br>
+                     T = L<sup>1/2</sup> × g<sup>-1/2</sup> × m<sup>0</sup><br>
+                     <strong>T = √(L/g)</strong><br>
+                     Mass doesn't affect the period!`
+            };
+            
+            content.innerHTML = steps[step];
+            stepsDiv.classList.remove('hidden');
+        }
+
+        // Pendulum demo
+        let pendulumAnimation = null;
+
+        function startPendulumDemo() {
+            const canvas = document.getElementById('pendulumDemo');
+            const ctx = canvas.getContext('2d');
+            const length = parseFloat(document.getElementById('lengthSlider').value);
+            
+            if (pendulumAnimation) cancelAnimationFrame(pendulumAnimation);
+            
+            let angle = Math.PI / 4;
+            let angularVelocity = 0;
+            const g = 9.8;
+            const centerX = canvas.width / 2;
+            const centerY = 30;
+            const pixelLength = length * 60;
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Physics
+                const acceleration = -(g / length) * Math.sin(angle);
+                angularVelocity += acceleration * 0.02;
+                angle += angularVelocity * 0.02;
+                
+                // Draw pendulum
+                const bobX = centerX + pixelLength * Math.sin(angle);
+                const bobY = centerY + pixelLength * Math.cos(angle);
+                
+                // String
+                ctx.strokeStyle = '#34495e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.lineTo(bobX, bobY);
+                ctx.stroke();
+                
+                // Pivot
+                ctx.fillStyle = '#2c3e50';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 6, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Bob
+                ctx.fillStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.arc(bobX, bobY, 12, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                pendulumAnimation = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function stopPendulumDemo() {
+            if (pendulumAnimation) {
+                cancelAnimationFrame(pendulumAnimation);
+                pendulumAnimation = null;
+            }
+        }
+
+        // Pendulum length slider
+        document.getElementById('lengthSlider').addEventListener('input', function(e) {
+            const length = parseFloat(e.target.value);
+            document.getElementById('pendulumLength').textContent = length.toFixed(1);
+            const period = 2 * Math.PI * Math.sqrt(length / 9.8);
+            document.getElementById('calculatedPeriod').textContent = period.toFixed(2);
+        });
+
+        // Quiz functionality
+        function checkAnswer(element, isCorrect) {
+            const options = element.parentNode.children;
+            for (let option of options) {
+                option.style.pointerEvents = 'none';
+                if (option === element) {
+                    option.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (option.onclick.toString().includes('true')) {
+                    option.classList.add('correct');
+                }
+            }
+            
+            const questionNum = Array.from(document.querySelectorAll('.quiz-container')).indexOf(element.closest('.quiz-container')) + 1;
+            const feedback = document.getElementById('feedback' + questionNum);
+            if (feedback) {
+                feedback.classList.remove('hidden');
+            }
+        }
+
+        // Track chapter completion
+        function markChapterCompleted() {
+            localStorage.setItem('chapter1Completed', 'true');
+            localStorage.setItem('lastCompletedTopic', currentTopic.toString());
+        }
+
+        // Initialize
+        updateProgress();
+        convertUnits();
+        
+        // Set initial calculated period
+        const initialLength = 1.0;
+        const initialPeriod = 2 * Math.PI * Math.sqrt(initialLength / 9.8);
+        document.getElementById('calculatedPeriod').textContent = initialPeriod.toFixed(2);
+
+        // Mark chapter as accessed
+        window.addEventListener('load', () => {
+            let accessHistory = JSON.parse(localStorage.getItem('physicsChapterAccess') || '[]');
+            if (!accessHistory.includes(1)) {
+                accessHistory.push(1);
+                localStorage.setItem('physicsChapterAccess', JSON.stringify(accessHistory));
+            }
+        });
+    </script>
+</body>
+</html>
