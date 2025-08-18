@@ -1245,4 +1245,11 @@
                 document.getElementById('ultimateStrength').textContent = 'Various';
             } else {
                 drawCurve(ctx, materials[material], material);
-                document.
+                document.getElementById('selectedMaterial').textContent = material.charAt(0).toUpperCase() + material.slice(1);
+                document.getElementById('elasticLimit').textContent = materials[material].elastic;
+                document.getElementById('ultimateStrength').textContent = materials[material].ultimate;
+            }
+        }
+    </script>
+</body>
+</html>
